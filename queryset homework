@@ -1,0 +1,331 @@
+2)
+In [2]: tasks = Tasks.objects.all()
+
+In [3]: for task in tasks:
+   ...:     print(task)
+   ...:
+Leg friend several idea.
+Along feel focus top want.
+Visit low chance form police.
+Director if catch force soon.
+Fire system want billion.
+Trade price art appear road.
+International itself late.
+Above where civil watch.
+Check feel social per.
+We too car ten.
+Keep pretty set ok something.
+Hand to morning.
+Hospital arm test meeting.
+Owner cut expert feel need.
+To whose suggest morning art.
+Use ready spring serious.
+Sit put down.
+Avoid whose go.
+Movie structure no voice.
+Home nothing share foreign.
+Indeed lot agreement maybe.
+Course behavior recent full.
+Democrat crime pass their.
+Buy law for no.
+Establish avoid share.
+Then state situation major.
+Store exist enjoy result.
+Short we dinner.
+Ready church main center.
+Bar spring final I down old.
+task 19
+task 18
+task 17
+task 16
+task 15
+task 14
+task 13
+task 12
+task 11
+task 9
+task 8
+task 7
+task 6
+task 5
+task 4
+task 3
+task 2
+task 1
+task 0
+
+3)
+In [7]: for task in tasks:
+   ...:     print(task, task.status)
+   ...:
+Leg friend several idea. created
+Along feel focus top want. created
+Visit low chance form police. created
+Director if catch force soon. created
+Fire system want billion. created
+Trade price art appear road. created
+International itself late. created
+Above where civil watch. created
+Check feel social per. created
+We too car ten. created
+Keep pretty set ok something. created
+Hand to morning. created
+Hospital arm test meeting. created
+Owner cut expert feel need. created
+To whose suggest morning art. created
+Use ready spring serious. created
+Sit put down. created
+Avoid whose go. created
+Movie structure no voice. created
+Home nothing share foreign. created
+Indeed lot agreement maybe. created
+Course behavior recent full. created
+Democrat crime pass their. created
+Buy law for no. created
+Establish avoid share. created
+Then state situation major. created
+Store exist enjoy result. created
+Short we dinner. created
+Ready church main center. created
+Bar spring final I down old. created
+task 19 created
+task 18 created
+task 17 created
+task 16 created
+task 15 created
+task 14 created
+task 13 created
+task 12 created
+task 11 created
+task 9 created
+task 8 created
+task 7 created
+task 6 created
+task 5 created
+task 4 created
+task 3 created
+task 2 created
+task 1 created
+task 0 created
+
+4)
+>>> task = Tasks.objects.filter(status__in["created", "started"])
+>>> for task in task:
+...     print(task, task.status)
+...
+Leg friend several idea. created
+Along feel focus top want. created
+Visit low chance form police. created
+Director if catch force soon. created
+Fire system want billion. created
+Trade price art appear road. created
+International itself late. created
+Above where civil watch. created
+Check feel social per. created
+We too car ten. created
+Keep pretty set ok something. created
+Hand to morning. created
+Hospital arm test meeting. created
+Owner cut expert feel need. created
+To whose suggest morning art. created
+Use ready spring serious. created
+Sit put down. created
+Avoid whose go. created
+Movie structure no voice. created
+Home nothing share foreign. created
+Indeed lot agreement maybe. created
+Course behavior recent full. created
+Democrat crime pass their. created
+Buy law for no. created
+Establish avoid share. created
+Then state situation major. created
+Store exist enjoy result. created
+Short we dinner. created
+Ready church main center. created
+Bar spring final I down old. created
+task 19 created
+task 18 created
+task 17 created
+task 16 created
+task 15 created
+task 14 created
+task 13 created
+task 12 created
+task 11 created
+task 9 created
+task 8 created
+task 7 created
+task 6 created
+task 5 created
+task 4 created
+task 3 created
+task 2 created
+task 1 created
+task 0 created
+>>>
+
+5)
+>>> tasks = Tasks.objects.filter(priority=5)
+>>> for task in tasks:
+...     print(task, task.priority)
+...
+Leg friend several idea. 5
+Along feel focus top want. 5
+International itself late. 5
+Use ready spring serious. 5
+Bar spring final I down old. 5
+task 15 5
+task 8 5
+
+6)
+>>> tasks = Tasks.objects.filter(is_reopened=True)
+>>> for task in tasks:
+...     print(task, '| Was reopened --', task.is_reopened)
+...
+Director if catch force soon. | Was reopened -- True
+Owner cut expert feel need. | Was reopened -- True
+Avoid whose go. | Was reopened -- True
+Movie structure no voice. | Was reopened -- True
+task 6 | Was reopened -- True
+>>>
+
+7)
+>>> tasks = Tasks.objects.all().order_by('-priority', '-created_at')
+>>> for task in tasks:
+...     print(task, '|', task.priority, '|', task.created_at)
+...
+Leg friend several idea. | 5 | 2026-03-23 18:42:36.621430+00:00
+Along feel focus top want. | 5 | 2026-03-23 18:42:36.621426+00:00
+International itself late. | 5 | 2026-03-23 18:42:36.621404+00:00
+Use ready spring serious. | 5 | 2026-03-23 18:42:34.750932+00:00
+Bar spring final I down old. | 5 | 2026-03-23 18:42:32.481001+00:00
+task 15 | 5 | 2026-03-23 18:20:17.950354+00:00
+task 8 | 5 | 2026-03-23 18:17:12.930666+00:00
+Visit low chance form police. | 3 | 2026-03-23 18:42:36.621422+00:00
+Director if catch force soon. | 3 | 2026-03-23 18:42:36.621418+00:00
+Fire system want billion. | 3 | 2026-03-23 18:42:36.621414+00:00
+Trade price art appear road. | 3 | 2026-03-23 18:42:36.621409+00:00
+Above where civil watch. | 3 | 2026-03-23 18:42:36.621398+00:00
+Check feel social per. | 3 | 2026-03-23 18:42:36.621386+00:00
+We too car ten. | 3 | 2026-03-23 18:42:36.621360+00:00
+Keep pretty set ok something. | 3 | 2026-03-23 18:42:34.750948+00:00
+Hand to morning. | 3 | 2026-03-23 18:42:34.750945+00:00
+Hospital arm test meeting. | 3 | 2026-03-23 18:42:34.750942+00:00
+Owner cut expert feel need. | 3 | 2026-03-23 18:42:34.750938+00:00
+To whose suggest morning art. | 3 | 2026-03-23 18:42:34.750935+00:00
+Sit put down. | 3 | 2026-03-23 18:42:34.750929+00:00
+Avoid whose go. | 3 | 2026-03-23 18:42:34.750924+00:00
+Movie structure no voice. | 3 | 2026-03-23 18:42:34.750917+00:00
+Home nothing share foreign. | 3 | 2026-03-23 18:42:34.750896+00:00
+Indeed lot agreement maybe. | 3 | 2026-03-23 18:42:32.481052+00:00
+Course behavior recent full. | 3 | 2026-03-23 18:42:32.481049+00:00
+Democrat crime pass their. | 3 | 2026-03-23 18:42:32.481046+00:00
+Buy law for no. | 3 | 2026-03-23 18:42:32.481043+00:00
+Establish avoid share. | 3 | 2026-03-23 18:42:32.481040+00:00
+Then state situation major. | 3 | 2026-03-23 18:42:32.481037+00:00
+Store exist enjoy result. | 3 | 2026-03-23 18:42:32.481034+00:00
+Short we dinner. | 3 | 2026-03-23 18:42:32.481030+00:00
+Ready church main center. | 3 | 2026-03-23 18:42:32.481022+00:00
+task 19 | 3 | 2026-03-23 18:20:17.952458+00:00
+task 18 | 3 | 2026-03-23 18:20:17.952030+00:00
+task 17 | 3 | 2026-03-23 18:20:17.951645+00:00
+task 16 | 3 | 2026-03-23 18:20:17.951080+00:00
+task 14 | 3 | 2026-03-23 18:20:17.949788+00:00
+task 13 | 3 | 2026-03-23 18:20:17.949312+00:00
+task 12 | 3 | 2026-03-23 18:20:17.948763+00:00
+task 11 | 3 | 2026-03-23 18:20:17.946642+00:00
+task 9 | 3 | 2026-03-23 18:17:12.931108+00:00
+task 7 | 3 | 2026-03-23 18:17:12.930259+00:00
+task 6 | 3 | 2026-03-23 18:17:12.929742+00:00
+task 5 | 3 | 2026-03-23 18:17:12.929299+00:00
+task 4 | 3 | 2026-03-23 18:17:12.928909+00:00
+task 3 | 3 | 2026-03-23 18:17:12.928507+00:00
+task 2 | 3 | 2026-03-23 18:17:12.927924+00:00
+task 1 | 3 | 2026-03-23 18:17:12.926901+00:00
+task 0 | 3 | 2026-03-23 18:17:12.922948+00:00
+>>>
+
+8)
+>>> tasks = Tasks.objects.count()
+>>> print(tasks)
+49
+>>>
+
+9)
+>>> latest_task = Tasks.objects.latest('-created_at')
+>>> print(latest_task)
+task 0
+
+or
+
+>>> latest_task = Tasks.objects.order_by('-created_at').first()
+>>> print(latest_task)
+Leg friend several idea.
+
+
+10)
+
+>>> tasks = Tasks.objects.exclude(status__in=['completed', 'canceled'])
+>>> for task in tasks:
+...     print(task, '|', task.status)
+...
+Leg friend several idea. | created
+Along feel focus top want. | started
+International itself late. | started
+Use ready spring serious. | started
+Bar spring final I down old. | created
+task 15 | created
+task 8 | created
+Visit low chance form police. | created
+Director if catch force soon. | created
+Fire system want billion. | created
+Trade price art appear road. | created
+Above where civil watch. | created
+Check feel social per. | created
+We too car ten. | created
+Keep pretty set ok something. | created
+Hand to morning. | created
+Hospital arm test meeting. | created
+Owner cut expert feel need. | created
+To whose suggest morning art. | created
+Sit put down. | created
+Avoid whose go. | created
+Movie structure no voice. | created
+Home nothing share foreign. | created
+Indeed lot agreement maybe. | created
+Course behavior recent full. | created
+Democrat crime pass their. | created
+Buy law for no. | created
+Establish avoid share. | created
+Then state situation major. | created
+Store exist enjoy result. | created
+Short we dinner. | created
+Ready church main center. | created
+task 19 | created
+task 18 | created
+task 17 | created
+task 16 | created
+task 14 | created
+task 13 | created
+task 12 | created
+task 11 | created
+task 9 | created
+task 7 | created
+task 6 | created
+task 5 | created
+task 4 | created
+task 3 | created
+task 2 | created
+task 1 | created
+task 0 | created
+>>>
+
+11)
+>>> tasks = Tasks.objects.exclude(description__isnull=True).exclude(description='')
+>>> for task in tasks:
+...     print(task, '|', task.description)
+...
+Leg friend several idea. | wdwdwdwd
+Along feel focus top want. | wdwdwdwd
+>>>
+
