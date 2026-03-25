@@ -1,0 +1,107 @@
+5)
+>>> tasks = Tasks.objects.filter(comments__isnull=False).distinct()
+>>> for task in tasks:
+...     print(f'{task.id}: {task.name}')
+...     for comm in task.comments.all():
+...             print(f' - {comm.message}')
+...
+49: Leg friend several idea.
+ - comment_1
+43: International itself late.
+ - chch
+47: Visit low chance form police.
+ - 6th
+46: Director if catch force soon.
+ - resist
+45: Fire system want billion.
+ - not the last one
+41: Check feel social per.
+ - no roma
+38: Hand to morning.
+ - eng
+36: Owner cut expert feel need.
+ - pypypy
+35: To whose suggest morning art.
+ - roma
+16: task 16
+ - maybe 7th
+>>>
+
+6)
+>>> projects = Projects.objects.filter(project_details__isnull=False)
+>>> for proj in projects:
+...     print(proj.name,'|', proj.project_detail)
+...
+another one | this is already the last one
+url tasks project | url info need to be learnt
+math task proj | task from math book, need to be solved
+univ project management | some project from my uni
+another project | this project is not the last one in the list we have
+admin hw | admin's things
+gift searcher project | for port
+chinese_language | learn chinese till may
+history class | history things
+django project 1 | my dj project
+>>>
+
+7)
+>>> tasks = Tasks.objects.filter(project_id=3)
+>>> for task in tasks:
+...     print(task, '|', task.project)
+...
+Visit low chance form police. | chinese_language
+>>>
+
+8)
+>>> tasks = Tasks.objects.filter(tags__name="Django")
+>>> for task in tasks:
+...     print(task, '|', task.tags)
+...     for tag in task.tags.all():
+...             print(f' -  {tag.name}')
+...
+Leg friend several idea. | task_manager.Tags.None
+ -  Django
+ -  another one
+Along feel focus top want. | task_manager.Tags.None
+ -  Django
+ -  obj
+International itself late. | task_manager.Tags.None
+ -  Django
+ -  homework
+Use ready spring serious. | task_manager.Tags.None
+ -  Django
+ -  class
+Bar spring final I down old. | task_manager.Tags.None
+ -  Django
+task 15 | task_manager.Tags.None
+ -  Django
+ -  task
+>>>
+
+9)
+>>> comments = Comments.objects.filter(user_id=2, task__tags__name='Django')
+>>> for comment in comments:
+...     print(f'{comment.id}: {comment.text}')
+...     print(f'task - {comment.task.name}')
+...     print(f' user - {comment.user}')
+...
+>>>
+
+10)
+>>> projects = Projects.objects.filter(tasks__status='canceled').distinct()
+>>> for proj in projects:
+...     print(proj.id, '|', proj)
+...
+10 | another one
+5 | admin hw
+>>>
+
+11)
+>>> users = []
+>>> for user in User.objects.all():
+...     if Comments.objects.filter(user=user).values('task').distinct().count() > 2:
+...             users.append(user.id)
+...
+>>> tasks = Tasks.objects.filter(assignee__in=users)
+>>> for task in tasks:
+...     print(task.name, task.assignee)
