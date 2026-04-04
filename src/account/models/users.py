@@ -6,10 +6,28 @@ from config.models import BaseModel
 
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
-    username = models.CharField(max_length=64, null=True, blank=True, unique=True)
-    phone = models.CharField(max_length=255, unique=True, null=True, blank=True)
-    first_name = models.CharField(max_length=64, null=True, blank=True)
-    last_name = models.CharField(max_length=64, null=True, blank=True)
+    username = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True,
+        unique=True
+    )
+    phone = models.CharField(
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True
+    )
+    first_name = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True
+    )
+    last_name = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True
+    )
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(max_length=64, unique=True)
     USERNAME_FIELD = 'email'
@@ -17,7 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.email}"
+        return f"{self.username}"
 
     class Meta:
         ordering = ["-id","-created_at"]

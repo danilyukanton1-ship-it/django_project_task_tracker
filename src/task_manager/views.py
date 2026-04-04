@@ -1,7 +1,10 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Tasks
+from account.models import User
+from .forms import TaskForm
+from django.db import transaction
 
 tasks_list = [
     {"task_name": "Fix login bug", "status": "in progress", "priority": "high"},
@@ -17,6 +20,8 @@ users = [
     {"name": "Charlie", "age": 28},
     {"name": "Diana", "age": 22}
 ]
+
+
 
 
 def tasks(request):
@@ -63,3 +68,49 @@ def user_list(request):
         'users': users
     }
     return render(request, 'users.html', context)
+
+
+def create_task(request):
+    # if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = TaskForm(request.POST)
+        # check whether it's valid:
+
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            form.save()
+            return HttpResponseRedirect("/tasks/")
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = TaskForm()
+
+    return render(request, "task_form.html", {"form": form})
+
+
+def comment_tasks(request):
+    task = Tasks.objects.filter(comments__isnull=False).prefetch_related('comments', 'tags',).select_related('assignee')
+    context = {
+        'tasks': task
+    }
+    return render(request, 'comment_tasks.html', context)
+
+
+def user_task(request):
+    users = User.objects.all()
+
+    user = request.GET.get('user')
+
+    if user:
+        task = Tasks.objects.filter(assignee__email=user)
+
+    else:
+        task = Tasks.objects.none()
+
+    context = {
+        'tasks': task,
+        'users': users
+    }
+    return render(request, 'user_task.html', context)

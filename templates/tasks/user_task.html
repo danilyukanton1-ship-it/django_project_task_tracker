@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.table-emerald thead {
+    background-color: #10b981;
+    color: white;
+}
+
+.table-emerald tbody tr:hover {
+    background-color: #d1fae5;
+}
+
+.table-emerald td:hover,
+.table-emerald th:hover {
+    background-color: #6ee7b7;
+}
+
+.table-emerald td,
+.table-emerald th {
+    transition: background-color 0.2s;
+}
+
+.form-select-custom {
+    max-width: 300px;
+    display: inline-block;
+}
+</style>
+
+<div class="container mt-4" style="max-width: 1200px;">
+
+<h2 class="mb-4">Задачи пользователя</h2>
+
+<!-- Форма выбора пользователя -->
+<form method="get" class="mb-4">
+  <div class="row g-3 align-items-end">
+    <div class="col-auto">
+      <label for="user" class="form-label fw-bold">Выберите пользователя:</label>
+    </div>
+    <div class="col-auto">
+      <select name="user" id="user" class="form-select form-select-custom">
+        <option value="">-- Выберите пользователя --</option>
+        {% for u in users %}
+          <option value="{{ u.email }}" {% if request.GET.user == u.email %}selected{% endif %}>
+            {{ u.username }} ({{ u.email }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-success">Показать</button>
+    </div>
+  </div>
+</form>
+
+<!-- Таблица с задачами -->
+<table class="table table-bordered table-striped text-center table-emerald">
+  <thead>
+    <tr>
+      <th scope="col">Название задачи</th>
+      <th scope="col">Исполнитель</th>
+      <th scope="col">Теги</th>
+      <th scope="col">Статус</th>
+      <th scope="col">Приоритет</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  {% for task in tasks %}
+     <tr>
+       <td>{{ task.name }}</td>
+       <td>
+        {% if task.assignee %}
+          {{ task.assignee.email }}
+        {% else %}
+          -
+        {% endif %}
+       </td>
+       <td>
+        {% for tag in task.tags.all %}
+          <span class="badge bg-secondary">{{ tag.name }}</span>
+        {% empty %}
+          -
+        {% endfor %}
+       </td>
+       <td>{{ task.status }}</td>
+       <td>{{ task.priority }}</td>
+     </tr>
+  {% empty %}
+     <tr>
+      <td colspan="5" class="text-center">
+        {% if request.GET.user %}
+          У выбранного пользователя нет задач
+        {% else %}
+          Выберите пользователя для отображения задач
+        {% endif %}
+      </td>
+     </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+</div>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from django.contrib import admin
 from config.models import BaseModel
 
 
@@ -40,7 +40,7 @@ class Tasks(BaseModel):
         default=False,
         verbose_name='Переоткрывалась ли'
     )
-    project=models.ForeignKey(
+    project = models.ForeignKey(
         to='Projects',
         related_name='tasks',
         on_delete=models.CASCADE,
@@ -65,7 +65,14 @@ class Tasks(BaseModel):
         return self.name
 
 
+class CompletedTaskManager(models.Manager):
+
+    def get_queryset(self):
+        return super().get_queryset().filter(status=TaskStatus.COMPLETED)
+
+
 class EducationTasks(Tasks):
+    objects = CompletedTaskManager()
 
     class Meta:
         proxy = True

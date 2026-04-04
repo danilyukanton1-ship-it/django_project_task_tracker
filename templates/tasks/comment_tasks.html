@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.table-emerald thead {
+    background-color: #10b981;
+    color: white;
+}
+
+.table-emerald tbody tr:hover {
+    background-color: #d1fae5;
+}
+
+.table-emerald td:hover,
+.table-emerald th:hover {
+    background-color: #6ee7b7;
+}
+
+.table-emerald td,
+.table-emerald th {
+    transition: background-color 0.2s;
+}
+</style>
+
+<div class="container mt-4" style="max-width: 1200px;">
+
+<h2 class="mb-4">Список задач с комментариями</h2>
+
+<table class="table table-bordered table-striped text-center table-emerald">
+  <thead>
+    <tr>
+      <th scope="col">Название задачи</th>
+      <th scope="col">Исполнитель</th>
+      <th scope="col">Теги</th>
+      <th scope="col">Статус</th>
+      <th scope="col">Приоритет</th>
+      <th scope="col">Комментарии</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  {% for task in tasks %}
+    <tr>
+      <td>{{ task.name }}</td>
+      <td>
+        {% if task.assignee %}
+          {{ task.assignee.email }}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>
+        {% for tag in task.tags.all %}
+          <span class="badge bg-secondary">{{ tag.name }}</span>
+        {% empty %}
+          -
+        {% endfor %}
+      </td>
+      <td>{{ task.status }}</td>
+      <td>{{ task.priority }}</td>
+      <td>
+        {% for comment in task.comments.all %}
+          <div class="mb-1 text-start">
+            <strong>{{ comment.user|default:"Аноним" }}:</strong> {{ comment.message }}
+          </div>
+        {% empty %}
+          <span class="text-muted">Нет комментариев</span>
+        {% endfor %}
+      </td>
+    </tr>
+  {% empty %}
+    <tr>
+      <td colspan="6" class="text-center">Задачи отсутствуют</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+</div>
+
+{% endblock %}
