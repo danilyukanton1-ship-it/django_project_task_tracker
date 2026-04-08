@@ -6,6 +6,7 @@ from config.models import BaseModel
 class Tags(BaseModel):
     name = models.CharField(
         max_length=64,
+
         unique=True,
         verbose_name='Наименование'
     )
@@ -13,7 +14,6 @@ class Tags(BaseModel):
         to='Tasks',
         related_name='tags'
     )
-
 
     class Meta:
         ordering = ['-created_at']

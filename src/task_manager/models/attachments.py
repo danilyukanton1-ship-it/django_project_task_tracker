@@ -1,6 +1,5 @@
 from django.db import models
 
-
 from config.models import BaseModel
 
 
@@ -8,13 +7,20 @@ class Attachments(BaseModel):
     name = models.CharField(
         max_length=64,
         unique=True,
-        verbose_name = "Наименование"
+        verbose_name="Наименование"
     )
 
     task = models.ForeignKey(
         to="Tasks",
         on_delete=models.CASCADE,
         related_name="attachments"
+    )
+
+    photo = models.ImageField(
+        upload_to='attachments',
+        null=True,
+        blank=True,
+        verbose_name='Фото'
     )
 
     class Meta:

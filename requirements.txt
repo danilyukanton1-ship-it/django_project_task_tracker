@@ -6,3 +6,6 @@ Faker==40.11.1
 factory_boy==3.3.3
 django-extensions==4.1
 ipython==9.11.0
+django-crispy-forms==2.6
+pillow==12.2.0
+

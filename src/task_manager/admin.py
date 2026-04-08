@@ -152,9 +152,18 @@ class AdminProject(admin.ModelAdmin):
     fields = ['name', 'description']
     # exclude = ['owner']
     inlines = [ProjectDetailsInline]
+@admin.register(Attachments)
+class AttachmentsAdmin(admin.ModelAdmin):
+    list_display = ['name', 'task', 'photo']
+
+    @admin.display(description='photo showing')
+    def display_photo(self, instance):
+        if instance.photo:
+            return mark_safe(f'<img src={ instance.photo.url } width=50/>')
+
 
 
 admin.site.register(Tags)
 admin.site.register(ProjectDetails)
 admin.site.register(Comments)
-admin.site.register(Attachments)
+
