@@ -66,7 +66,7 @@
                 {% for attachment in task.attachments.all %}
                     {% if attachment.photo %}
                         <img style="max_height: 50px" src='{{ attachment.photo.url }}'/>
-                    <% endif %}
+                    {% endif %}
                 {% endfor %}
             </td>
         </tr>

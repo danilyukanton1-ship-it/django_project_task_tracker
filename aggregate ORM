@@ -1,0 +1,397 @@
+1)
+>>> tasks = Tasks.objects.values('status').annotate(status_count=Count('id'))
+>>> for task in tasks:
+...     print(f'{task['status']}: {task['status_count']}')
+...
+SELECT "tasks"."status" AS "status",
+       COUNT("tasks"."id") AS "status_count"
+  FROM "tasks"
+ GROUP BY 1
+
+Execution time: 0.156314s [Database: default]
+canceled: 199989
+completed: 199837
+created: 200255
+failed: 200036
+started: 199885
+>>>
+
+2)
+>>> tasks = Tasks.objects.values('assignee__email').annotate(cou=Count('id')).order_by('-cou').first()
+SELECT "users"."email" AS "assignee__email",
+       COUNT("tasks"."id") AS "cou"
+  FROM "tasks"
+  LEFT OUTER JOIN "users"
+    ON ("tasks"."assignee_id" = "users"."id")
+ GROUP BY 1
+ ORDER BY 2 DESC
+ LIMIT 1
+
+Execution time: 0.198828s [Database: default]
+>>> print(tasks)
+{'assignee__email': 'landryjack@example.com', 'cou': 10295}
+>>>
+
+3) >>> tasks = Tasks.objects.annotate(t_cou=Count('comments')
+слишком много задач в базе
+
+4) >>> tasks = Tasks.objects.annotate(comm_count=Count('comments')).filter(comm_count__gt=3)
+
+5)>>> users_p = Tasks.objects.select_related('assignee').values('assignee__email').annotate(avg_prior=Avg('priority'))
+>>> for task in users_p:
+...     print(f'{task['assignee__email']}: {task['avg_prior']}')
+...
+SELECT "users"."email" AS "assignee__email",
+       AVG("tasks"."priority") AS "avg_prior"
+  FROM "tasks"
+  LEFT OUTER JOIN "users"
+    ON ("tasks"."assignee_id" = "users"."id")
+ GROUP BY 1
+
+Execution time: 0.198516s [Database: default]
+aayala@example.org: 3.026209478766381
+alexanderwalker@example.com: 2.9827790973871733
+alicia02@example.com: 2.990334273056786
+alyssafernandez@example.org: 2.9752874722614484
+amber73@example.net: 3.0130712432648172
+amorris@example.net: 3.018429966128711
+amy36@example.org: 3.008247837457252
+ashley63@example.net: 2.9830784913353723
+bearderic@example.net: 2.9821786143372044
+bensontiffany@example.net: 3.004306459689534
+bradleyhull@example.com: 2.983276926139757
+brandon95@example.net: 2.9931165203511574
+brownjonathan@example.com: 3.0124822407144305
+calexander@example.net: 2.997875569044006
+cooperjames@example.net: 2.9669883189436264
+cthomas@example.org: 3.014478282576136
+curtiskimberly@example.com: 3.0114538330151714
+cwood@example.org: 2.9881130756168215
+daguilar@example.org: 3.0137318255250403
+daniel91@example.org: 2.9985252187592173
+danielleschaefer@example.com: 3.0037698412698415
+darylmiller@example.net: 2.995483741469289
+davidbarton@example.org: 2.99535251656284
+daviskimberly@example.org: 2.9945935122146574
+debra04@example.net: 2.9951326115029304
+dennis10@example.net: 2.9926992896606155
+dmoody@example.org: 2.9982209922909666
+dylan03@example.org: 2.9943797671617824
+edwinhogan@example.org: 3.023480662983425
+emmalee@example.org: 2.990770465489567
+eringalloway@example.net: 2.9855289421157685
+gonzalespaul@example.org: 3.01161250891311
+greenmatthew@example.com: 3.0037634941071607
+gregory37@example.net: 3.002208391889179
+gwilliams@example.org: 3.0018776558948512
+harrisrobert@example.com: 3.0074170592362433
+huertarobert@example.org: 3.0019898517560444
+jacobsmatthew@example.com: 3.0065901148277585
+jameslane@example.com: 3.0227720820189274
+jasonhall@example.com: 3.001917642309245
+jedwards@example.net: 3.0114430379746837
+jeremyjohnson@example.com: 3.002029632636493
+jeremymyers@example.com: 2.9856421427864146
+jimmejia@example.com: 3.002182972812066
+jkramer@example.com: 2.999800955414013
+johnfox@example.com: 2.9950314337862505
+johnsonjasmine@example.org: 3.0012935323383085
+jonathan04@example.net: 2.999289195775792
+joy03@example.com: 3.0244366549824737
+joyce65@example.com: 2.9872459147070547
+kevin05@example.net: 3.003133845531743
+khess@example.net: 2.9952501263264275
+landryjack@example.com: 3.013113161728995
+laurenmcclure@example.org: 2.9835802963556266
+lisa24@example.org: 3.012002017145739
+lisa31@example.net: 2.990383671867334
+lisa61@example.com: 2.9899071457408155
+lowekristen@example.org: 2.9710467706013364
+martindouglas@example.com: 2.985741350084754
+maryjames@example.com: 3.0141660015961693
+mcgeemegan@example.com: 3.005926074728807
+mcmillancheryl@example.com: 2.9713019836874435
+michaelkoch@example.org: 2.9846964629573325
+mitchellkristin@example.com: 2.9793172690763052
+mitchellluis@example.com: 3.0035552044242544
+nancyanderson@example.net: 2.9840127897681854
+nedwards@example.net: 2.9887685925326317
+ninaparsons@example.org: 3.0081852665202633
+ningram@example.net: 3.001270648030496
+nwhite@example.com: 2.9794803052175705
+ohuber@example.org: 2.993664620867155
+parkrobin@example.com: 3.0117880138682516
+paulwilliams@example.net: 3.004624509902483
+philip72@example.org: 2.987032270837458
+ppalmer@example.net: 3.0026183282980865
+qcollins@example.net: 2.999899709156554
+ramostina@example.com: 3.010481558390191
+rebeccahunter@example.com: 2.9987894683748615
+robertorr@example.org: 3.0015825914935705
+rosemario@example.net: 3.0083456062837506
+santosbrian@example.org: 2.9971881903996787
+scottjackie@example.net: 2.988239944658563
+scottjessica@example.com: 3.007910283368379
+smithjacob@example.com: 2.9870416875941737
+spencestacey@example.com: 2.9931250631887574
+stacey99@example.net: 2.990369340746624
+stacy46@example.org: 3.034250076679276
+starkraymond@example.org: 2.983441396508728
+steven44@example.org: 3.01591043017089
+thomasholden@example.com: 2.992340594847309
+tiffany14@example.com: 3.0153783481006213
+tina24@example.org: 3.010499207606973
+tmitchell@example.com: 2.987523517179919
+troyrivera@example.net: 3.0057453885697005
+uwilliams@example.net: 3.0082308708464587
+watsondouglas@example.org: 3.014885114885115
+whitestephanie@example.org: 3.015421832476565
+wolfmargaret@example.net: 2.9755300178323756
+yibarra@example.net: 2.9895424836601308
+ylozano@example.net: 2.9921774433112187
+None: 2.0
+>>>
+
+6)
+>>> tag_prior = Tasks.objects.values('tags__name').annotate(tag_sum=Sum('priority'))
+>>> for task in tag_prior:
+...     print(f'{task['tags__name']}: {task['tag_sum']}')
+...
+SELECT "tags"."name" AS "tags__name",
+       SUM("tasks"."priority") AS "tag_sum"
+  FROM "tasks"
+  LEFT OUTER JOIN "tags_tasks"
+    ON ("tasks"."id" = "tags_tasks"."tasks_id")
+  LEFT OUTER JOIN "tags"
+    ON ("tags_tasks"."tags_id" = "tags"."id")
+ GROUP BY 1
+
+Execution time: 0.642270s [Database: default]
+act: 59453
+adult: 60091
+also: 59511
+although: 60450
+another: 59874
+approach: 60431
+arrive: 60225
+bad: 60265
+bit: 59742
+blood: 60577
+break: 59026
+by: 60723
+center: 60116
+citizen: 60562
+contain: 59692
+court: 60104
+customer: 59735
+day: 59347
+deal: 59853
+decide: 59473
+director: 59819
+discover: 60520
+down: 60362
+dream: 59997
+drug: 59808
+else: 60130
+environmental: 60505
+explain: 60168
+few: 59674
+fire: 59587
+food: 60127
+forget: 60475
+glass: 60001
+goal: 60406
+her: 59945
+hope: 59624
+how: 60279
+it: 59559
+later: 59199
+list: 59565
+look: 59894
+marriage: 60219
+may: 60148
+meet: 60165
+million: 59580
+new: 59698
+north: 59696
+notice: 60117
+officer: 60160
+oil: 59681
+on: 59384
+once: 60269
+over: 60704
+parent: 59580
+particular: 59785
+picture: 59313
+position: 60264
+pretty: 61043
+product: 59566
+production: 59264
+radio: 60113
+raise: 60002
+read: 59562
+reality: 60289
+reduce: 60486
+right: 60382
+sell: 59057
+send: 60362
+serious: 60663
+short: 60108
+similar: 60015
+skin: 59069
+something: 60326
+song: 60401
+soon: 60113
+southern: 59676
+space: 59702
+stand: 60169
+star: 60601
+start: 60637
+store: 60255
+strong: 59625
+student: 59740
+stuff: 60601
+style: 60005
+subject: 59714
+talk: 60168
+television: 59952
+ten: 60681
+thought: 59316
+through: 59919
+throw: 60200
+tonight: 60399
+TV: 59776
+until: 60379
+us: 60346
+voice: 60309
+we: 60157
+what: 59566
+yeah: 59402
+None: 4
+>>>
+
+7)
+>>> tasks = Tasks.objects.annotate(count_coms=Count('comments'), count_tags=Count('tags')).filter(count_coms__gt=F('count_tags'))[:100]
+>>> for task in tasks:
+...     print(f'{task.name}: {task.count_coms} > {task.count_tags}')
+...
+SELECT "tasks"."id",
+       "tasks"."created_at",
+       "tasks"."updated_at",
+       "tasks"."name",
+       "tasks"."description",
+       "tasks"."status",
+       "tasks"."priority",
+       "tasks"."is_reopened",
+       "tasks"."project_id",
+       "tasks"."assignee_id",
+       COUNT("comments"."id") AS "count_coms",
+       COUNT("tags_tasks"."tags_id") AS "count_tags"
+  FROM "tasks"
+  LEFT OUTER JOIN "comments"
+    ON ("tasks"."id" = "comments"."task_id")
+  LEFT OUTER JOIN "tags_tasks"
+    ON ("tasks"."id" = "tags_tasks"."tasks_id")
+ GROUP BY "tasks"."id"
+HAVING COUNT("comments"."id") > (COUNT("tags_tasks"."tags_id"))
+ LIMIT 100
+
+Execution time: 4.223352s [Database: default]
+Имя задачи какое: 1 > 0
+Еще одна задача из формы: 1 > 0
+>>>
+
+8)
+>>> tasks = Tasks.objects.values('assignee__email').annotate(comm_count=Count('comments')).order_by('-comm_count')[:3]
+>>> for task in tasks:
+...     print(f'{task['assignee__email']}: {task['comm_count']}')
+...
+SELECT "users"."email" AS "assignee__email",
+       COUNT("comments"."id") AS "comm_count"
+  FROM "tasks"
+  LEFT OUTER JOIN "users"
+    ON ("tasks"."assignee_id" = "users"."id")
+  LEFT OUTER JOIN "comments"
+    ON ("tasks"."id" = "comments"."task_id")
+ GROUP BY 1
+ ORDER BY 2 DESC
+ LIMIT 3
+
+Execution time: 0.690164s [Database: default]
+landryjack@example.com: 25813
+ningram@example.net: 25622
+lisa31@example.net: 25602
+>>>
+
+9) ### УЖАС
+>>> sql_q="""
+... SELECT t.*
+... ,
+... COUNT(c.id) AS com_count
+... FROM tasks t
+... LEFT JOIN comments c
+... ON t.id = c.task_id
+... GROUP BY t.id
+... HAVING COUNT(c.id) = (SELECT MAX(com_count) FROM (
+... SELECT COUNT(c2.id) AS com_count
+... FROM tasks t2
+... LEFT JOIN comments c2
+... ON t2.id = c2.task_id
+... GROUP BY t2.id
+... ) AS counts
+... )
+... """
+>>> tasks = Tasks.objects.raw(sql_q)
+>>> for task in tasks:
+...     print(task)
+...
+SELECT t.*,
+       COUNT(c.id) AS com_count
+  FROM tasks t
+  LEFT JOIN comments c
+    ON t.id = c.task_id
+ GROUP BY t.id
+HAVING COUNT(c.id) = (
+        SELECT MAX(com_count)
+          FROM (
+                SELECT COUNT(c2.id) AS com_count
+                  FROM tasks t2
+                  LEFT JOIN comments c2
+                    ON t2.id = c2.task_id
+                 GROUP BY t2.id
+               ) AS counts
+       )
+
+Execution time: 3.019239s [Database: default]
+A against building.
+>>>
+
+10)
+>>> priority_avg = Tasks.objects.aggregate(Avg('priority'))
+>>> tasks = Tasks.objects.annotate(com_count=Count('comments')).filter(Q(com_count__gt=5), Q(priority__gt=priority_avg['priority__avg']))
+>>> for task in tasks:
+...     print(f'{task.name}: com-count={task.com_count}, {task.priority}>{priority_avg['priority__avg']}')
+
+...
+SELECT "tasks"."id",
+       "tasks"."created_at",
+       "tasks"."updated_at",
+       "tasks"."name",
+       "tasks"."description",
+       "tasks"."status",
+       "tasks"."priority",
+       "tasks"."is_reopened",
+       "tasks"."project_id",
+       "tasks"."assignee_id",
+       COUNT("comments"."id") AS "com_count"
+  FROM "tasks"
+  LEFT OUTER JOIN "comments"
+    ON ("tasks"."id" = "comments"."task_id")
+ WHERE "tasks"."priority" > 2
+ GROUP BY "tasks"."id"
+HAVING COUNT("comments"."id") > 5
+
+Execution time: 1.636446s [Database: default]
+Исправленная задача: com-count=7, 5>2.998917002165996
+A against building.: com-count=11, 5>2.998917002165996
+>>>

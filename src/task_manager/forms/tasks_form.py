@@ -21,11 +21,13 @@ class TasksCreationForm(forms.ModelForm):
 
     class Meta:
         model = Tasks
-        fields = ['name', 'priority', 'description', 'status']
+        fields = ['name', 'priority', 'description', 'status', 'assignee', 'project']
         labels = {
             'name': 'Имя задачи',
             'status': 'Статус задачи',
-            'description': 'Описание задачи'
+            'description': 'Описание задачи',
+            'assignee': 'Владелец задачи',
+            'project': 'Проект к которому прикреплена задача'
         }
         widgets = {
             'description': forms.Textarea(attrs={

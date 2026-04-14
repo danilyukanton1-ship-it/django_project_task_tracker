@@ -20,9 +20,11 @@ from . import settings
 from django.urls import path, include
 from debug_toolbar.toolbar import debug_toolbar_urls
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('task_manager.urls'),)
+    path('', include('task_manager.urls'), ),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+]
 
-] + debug_toolbar_urls() + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += debug_toolbar_urls() + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

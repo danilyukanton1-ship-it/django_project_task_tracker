@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<p>Создание задачи и комментария</p>
+
+<form method="post" action="">
+    {% csrf_token %}
+    
+    <h3>Информация о задаче</h3>
+    {{ form1|crispy }}
+    
+    <h3>Комментарий</h3>
+    {{ form2|crispy }}
+    
+    <button type="submit" class="btn btn-primary">Создать задачу и комментарий</button>
+</form>
+
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Tasks, Tags, Projects, ProjectDetails, Comments, Attachments
 from django.contrib.admin import SimpleListFilter
+from django.utils.html import format_html
 
 
 # admin actions
@@ -152,18 +153,19 @@ class AdminProject(admin.ModelAdmin):
     fields = ['name', 'description']
     # exclude = ['owner']
     inlines = [ProjectDetailsInline]
+
+
 @admin.register(Attachments)
 class AttachmentsAdmin(admin.ModelAdmin):
-    list_display = ['name', 'task', 'photo']
+    list_display = ['id', 'name', 'task', 'photo']
+    raw_id_fields = ['task']
 
     @admin.display(description='photo showing')
     def display_photo(self, instance):
         if instance.photo:
-            return mark_safe(f'<img src={ instance.photo.url } width=50/>')
-
+            return format_html('<img src="{}" width=50/>', instance.photo.url)
 
 
 admin.site.register(Tags)
 admin.site.register(ProjectDetails)
 admin.site.register(Comments)
-

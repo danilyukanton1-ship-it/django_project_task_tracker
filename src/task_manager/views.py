@@ -1,11 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Tasks, Comments
+from .models import Tasks, Attachments
 from account.models import User
-from .forms import TaskForm, CommentForm, TasksCreationForm, ChangeTask
+from .forms import (TaskForm,
+                    CommentForm,
+                    TasksCreationForm,
+                    ChangeTask,
+                    AttachmentForm
+                    )
 from django.db import transaction
 from django.core.paginator import Paginator
+from django.views.decorators.cache import cache_page
+from django.views.generic import TemplateView
+from django.views import View
+from django.views.generic.list import ListView
 
 tasks_list = [
     {"task_name": "Fix login bug", "status": "in progress", "priority": "high"},
@@ -23,31 +32,48 @@ users = [
 ]
 
 
-def tasks(request):
-    """
-    :param request:
-    :return: page with tasks
-    """
-    task = Tasks.objects.select_related('assignee').prefetch_related('tags', 'comments').all().order_by('id')
-    paginator = Paginator(task, 50)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'tasks': page_obj, 'page_obj': page_obj
-    }
-    return render(request, 'tasks.html', context)
+# # @cache_page(60)
+# def tasks(request):
+#     """
+#     :param request:
+#     :return: page with tasks
+#     """
+#     import time
+#     time.sleep(8)
+#
+#     task = Tasks.objects.select_related('assignee').prefetch_related('tags', 'comments').all().order_by('id')
+#     paginator = Paginator(task, 50)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#     context = {
+#         'tasks': page_obj, 'page_obj': page_obj
+#     }
+#     return render(request, 'tasks.html', context)
+#
+
+class TaskView(ListView):
+    template_name = 'tasks.html'
+    model = Tasks
+
+    paginate_by = 50
+    paginator_class = Paginator
+    context_object_name = 'tasks'
+
+    def get_queryset(self):
+        return Tasks.objects.select_related('assignee').prefetch_related('tags', 'comments').all().order_by('id')
 
 
 def home(request):
     return render(request, 'home.html')
 
 
-def about(request):
-    return render(request, 'about.html')
+class About(TemplateView):
+    template_name = 'about.html'
 
 
-def index_2(request, task):
-    return HttpResponse(f'<h1>Index 2. {task}</h1>')
+class Index_2(View):
+    def get(self):
+        return HttpResponse(f'<h1>Index 2. {task}</h1>')
 
 
 def task_list_view(request):
@@ -121,13 +147,15 @@ def user_task(request):
 
 
 def add_comment_form(request):
+    task_name = request.session.get('pending_task_name')
+    task = Tasks.objects.get(name=task_name)
     if request.method == 'POST':
         form = CommentForm(request.POST)
 
         if form.is_valid():
             comment = form.save(commit=False)
             comment.user = User.objects.get(username=form.cleaned_data['user'])
-            comment.task = Tasks.objects.get(name=form.cleaned_data['task'])
+            comment.task = task
             comment.save()
             messages.success(request, 'Комментарий добавлен')
             return redirect('.')
@@ -141,13 +169,40 @@ def add_task_form(request):
     if request.method == "POST":
         form = TasksCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            task = form.save()
+            request.session['pending_task_name'] = task.name
             messages.success(request, message='Задача добавлена')
-            return redirect('.')
+            return redirect('add_comments')
     else:
         form = TasksCreationForm()
 
     return render(request, 'add_task.html', {'form': form})
+
+
+# TASK 11 transactions
+@transaction.atomic
+def add_task_comment(request):
+    if request.method == "POST":
+        task_f = TasksCreationForm(request.POST)
+        com_f = CommentForm(request.POST)
+        if task_f.is_valid() and com_f.is_valid():
+            task = task_f.save()
+            request.session['pending_task_name'] = task.name
+            messages.success(request, message='Задача добавлена')
+            comment = com_f.save(commit=False)
+            comment.user = User.objects.get(username=com_f.cleaned_data['user'])
+            comment.task = Tasks.objects.get(name=request.session.get('pending_task_name'))
+            comment.save()
+            messages.success(request, 'Комментарий добавлен')
+            return redirect('/tasks/')
+        else:
+            print("нет")
+            messages.error(request, message='ERROR!!!')
+    else:
+        task_f = TasksCreationForm()
+        com_f = CommentForm()
+
+    return render(request, 'add_task_com.html', {'form1': task_f, "form2": com_f})
 
 
 def change_task_form(request, task_id):
@@ -169,3 +224,24 @@ def change_task_form(request, task_id):
                }
 
     return render(request, 'change_task.html', context)
+
+
+def create_attachment(request):
+    if request.method == "POST":
+        form = AttachmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'attachment was created successfully')
+            return redirect('tasks')
+    else:
+        form = AttachmentForm()
+    return render(request, 'attachment_form.html', {'form': form})
+
+
+def attachments(request):
+    atts = Attachments.objects.all()
+    p = Paginator(atts, 25)
+
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    return render(request, 'attachments.html', {'page_obj': page_obj})

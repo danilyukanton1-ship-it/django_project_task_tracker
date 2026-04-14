@@ -17,7 +17,7 @@ class Attachments(BaseModel):
     )
 
     photo = models.ImageField(
-        upload_to='attachments',
+        upload_to='attachments/',
         null=True,
         blank=True,
         verbose_name='Фото'
