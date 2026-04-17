@@ -12,7 +12,6 @@ from rest_framework import mixins
 from rest_framework import generics
 from drf_spectacular.utils import extend_schema
 
-
 # @csrf_exempt
 # def tasks_list(request):
 #     """
@@ -149,7 +148,8 @@ from drf_spectacular.utils import extend_schema
 #         task.delete()
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
-@extend_schema(tags=['Task'])
+
+@extend_schema(tags=["Task"])
 class TaskListAPIView(
     mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView
 ):

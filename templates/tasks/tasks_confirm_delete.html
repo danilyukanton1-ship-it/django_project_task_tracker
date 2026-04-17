@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<p>Удалеие задачи</p>
+<p>id задачи: {{ object.id }}</p>
+<p>Имя задачи: {{ object.name }}</p>
+
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Удалить задачу</button>
+</form>
+
+{% endblock %}

@@ -5,61 +5,45 @@ from config.models import BaseModel
 
 
 class TaskStatus(models.TextChoices):
-    CREATED = 'created'
-    STARTED = 'started'
-    COMPLETED = 'completed'
-    CANCELED = 'canceled'
-    FAILED = 'failed'
+    CREATED = "created"
+    STARTED = "started"
+    COMPLETED = "completed"
+    CANCELED = "canceled"
+    FAILED = "failed"
 
 
 class Tasks(BaseModel):
-    name = models.CharField(
-        max_length=64,
-        unique=True,
-        verbose_name='Наименование'
-    )
-    description = models.TextField(
-        null=True,
-        blank=True,
-        verbose_name='Описание'
-    )
+    name = models.CharField(max_length=64, unique=True, verbose_name="Наименование")
+    description = models.TextField(null=True, blank=True, verbose_name="Описание")
     status = models.CharField(
-        choices=TaskStatus,
-        default=TaskStatus.CREATED,
-        verbose_name='Статус'
+        choices=TaskStatus, default=TaskStatus.CREATED, verbose_name="Статус"
     )
     priority = models.IntegerField(
-        validators=[
-            MinValueValidator(1),
-            MaxValueValidator(5)
-        ],
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
         default=3,
-        verbose_name='Приоритетность'
+        verbose_name="Приоритетность",
     )
-    is_reopened = models.BooleanField(
-        default=False,
-        verbose_name='Переоткрывалась ли'
-    )
+    is_reopened = models.BooleanField(default=False, verbose_name="Переоткрывалась ли")
     project = models.ForeignKey(
-        to='Projects',
-        related_name='tasks',
+        to="Projects",
+        related_name="tasks",
         on_delete=models.CASCADE,
         null=True,
-        blank=True
+        blank=True,
     )
     assignee = models.ForeignKey(
-        to='account.User',
-        related_name='tasks',
+        to="account.User",
+        related_name="tasks",
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
     )
 
     class Meta:
-        ordering = ['-priority', '-created_at']
-        db_table = 'tasks'
-        verbose_name = 'Задача'
-        verbose_name_plural = 'Задача'
+        ordering = ["-priority", "-created_at"]
+        db_table = "tasks"
+        verbose_name = "Задача"
+        verbose_name_plural = "Задача"
 
     def __str__(self):
         return self.name

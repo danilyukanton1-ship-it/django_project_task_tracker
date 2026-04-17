@@ -64,9 +64,9 @@
             </td>
             <td>
                 {% for attachment in task.attachments.all %}
-                    {% if attachment.photo %}
-                        <img style="max_height: 50px" src='{{ attachment.photo.url }}'/>
-                    {% endif %}
+                {% if attachment.photo %}
+                <img style="max_height: 50px" src='{{ attachment.photo.url }}'/>
+                {% endif %}
                 {% endfor %}
             </td>
         </tr>
@@ -75,6 +75,51 @@
 
     </table>
 
+    <!-- pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">«</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">‹</a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num >= page_obj.number|add:-2 and num <= page_obj.number|add:2 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">›</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">»</a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+
 </div>
 
 {% endblock %}
+
+</div>
+
+</div>
+
+

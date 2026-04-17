@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('task_manager', '0003_alter_tasks_project'),
+        ("task_manager", "0003_alter_tasks_project"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='comments',
-            name='message',
-            field=models.CharField(max_length=64, verbose_name='Текст комментария'),
+            model_name="comments",
+            name="message",
+            field=models.CharField(max_length=64, verbose_name="Текст комментария"),
         ),
     ]

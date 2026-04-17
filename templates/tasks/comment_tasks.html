@@ -3,79 +3,120 @@
 {% block content %}
 
 <style>
-.table-emerald thead {
-    background-color: #10b981;
-    color: white;
-}
+    .table-emerald thead {
+        background-color: #10b981;
+        color: white;
+    }
 
-.table-emerald tbody tr:hover {
-    background-color: #d1fae5;
-}
+    .table-emerald tbody tr:hover {
+        background-color: #d1fae5;
+    }
 
-.table-emerald td:hover,
-.table-emerald th:hover {
-    background-color: #6ee7b7;
-}
+    .table-emerald td:hover,
+    .table-emerald th:hover {
+        background-color: #6ee7b7;
+    }
 
-.table-emerald td,
-.table-emerald th {
-    transition: background-color 0.2s;
-}
+    .table-emerald td,
+    .table-emerald th {
+        transition: background-color 0.2s;
+    }
 </style>
 
 <div class="container mt-4" style="max-width: 1200px;">
 
-<h2 class="mb-4">Список задач с комментариями</h2>
+    <h2 class="mb-4">Список задач с комментариями</h2>
 
-<table class="table table-bordered table-striped text-center table-emerald">
-  <thead>
-    <tr>
-      <th scope="col">Название задачи</th>
-      <th scope="col">Исполнитель</th>
-      <th scope="col">Теги</th>
-      <th scope="col">Статус</th>
-      <th scope="col">Приоритет</th>
-      <th scope="col">Комментарии</th>
-    </tr>
-  </thead>
+    <table class="table table-bordered table-striped text-center table-emerald">
+        <thead>
+        <tr>
+            <th scope="col">Название задачи</th>
+            <th scope="col">Исполнитель</th>
+            <th scope="col">Теги</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Приоритет</th>
+            <th scope="col">Комментарии</th>
+        </tr>
+        </thead>
 
-  <tbody>
-  {% for task in tasks %}
-    <tr>
-      <td>{{ task.name }}</td>
-      <td>
-        {% if task.assignee %}
-          {{ task.assignee.email }}
-        {% else %}
-          -
-        {% endif %}
-      </td>
-      <td>
-        {% for tag in task.tags.all %}
-          <span class="badge bg-secondary">{{ tag.name }}</span>
+        <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.name }}</td>
+            <td>
+                {% if task.assignee %}
+                {{ task.assignee.email }}
+                {% else %}
+                -
+                {% endif %}
+            </td>
+            <td>
+                {% for tag in task.tags.all %}
+                <span class="badge bg-secondary">{{ tag.name }}</span>
+                {% empty %}
+                -
+                {% endfor %}
+            </td>
+            <td>{{ task.status }}</td>
+            <td>{{ task.priority }}</td>
+            <td>
+                {% for comment in task.comments.all %}
+                <div class="mb-1 text-start">
+                    <strong>{{ comment.user|default:"Аноним" }}:</strong> {{ comment.message }}
+                </div>
+                {% empty %}
+                <span class="text-muted">Нет комментариев</span>
+                {% endfor %}
+            </td>
+        </tr>
         {% empty %}
-          -
+        <tr>
+            <td colspan="6" class="text-center">Задачи отсутствуют</td>
+        </tr>
         {% endfor %}
-      </td>
-      <td>{{ task.status }}</td>
-      <td>{{ task.priority }}</td>
-      <td>
-        {% for comment in task.comments.all %}
-          <div class="mb-1 text-start">
-            <strong>{{ comment.user|default:"Аноним" }}:</strong> {{ comment.message }}
-          </div>
-        {% empty %}
-          <span class="text-muted">Нет комментариев</span>
-        {% endfor %}
-      </td>
-    </tr>
-  {% empty %}
-    <tr>
-      <td colspan="6" class="text-center">Задачи отсутствуют</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+        </tbody>
+    </table>
+
+    <!-- pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">«</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">‹</a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num >= page_obj.number|add:-2 and num <= page_obj.number|add:2 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">›</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">»</a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+
+</div>
 
 </div>
 

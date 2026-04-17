@@ -1,1 +1,1 @@
-from config.models import BaseModel
+from src.config.models import BaseModel

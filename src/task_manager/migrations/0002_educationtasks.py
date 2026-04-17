@@ -6,19 +6,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('task_manager', '0001_initial'),
+        ("task_manager", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='EducationTasks',
-            fields=[
-            ],
+            name="EducationTasks",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('task_manager.tasks',),
+            bases=("task_manager.tasks",),
         ),
     ]

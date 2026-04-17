@@ -1,1 +1,1 @@
-from .task import TaskSerializer
+from task_manager.v1.serializers.task import TaskSerializer

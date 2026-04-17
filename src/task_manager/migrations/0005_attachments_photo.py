@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('task_manager', '0004_alter_comments_message'),
+        ("task_manager", "0004_alter_comments_message"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='attachments',
-            name='photo',
-            field=models.ImageField(blank=True, null=True, upload_to='attachments', verbose_name='Фото'),
+            model_name="attachments",
+            name="photo",
+            field=models.ImageField(
+                blank=True, null=True, upload_to="attachments", verbose_name="Фото"
+            ),
         ),
     ]

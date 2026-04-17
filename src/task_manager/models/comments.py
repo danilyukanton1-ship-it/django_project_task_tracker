@@ -4,10 +4,7 @@ from config.models import BaseModel
 
 
 class Comments(BaseModel):
-    message = models.CharField(
-        max_length=64,
-        verbose_name="Текст комментария"
-    )
+    message = models.CharField(max_length=64, verbose_name="Текст комментария")
 
     user = models.ForeignKey(
         to="account.User",
@@ -15,9 +12,7 @@ class Comments(BaseModel):
         null=True,
     )
     task = models.ForeignKey(
-        to="Tasks",
-        related_name="comments",
-        on_delete=models.CASCADE
+        to="Tasks", related_name="comments", on_delete=models.CASCADE
     )
 
     class Meta:

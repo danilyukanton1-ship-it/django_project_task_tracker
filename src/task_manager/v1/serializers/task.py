@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from task_manager.models import Tasks, Projects
 from account.models import User
-from .comment import CommentSerializer
-
+from task_manager.v1.serializers.comment import CommentSerializer
 
 # class TaskSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)
@@ -27,6 +26,7 @@ from .comment import CommentSerializer
 #         return instance
 #
 
+
 class TaskSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     status = serializers.CharField(read_only=True)
@@ -38,13 +38,13 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tasks
         fields = [
-            'id',
-            'name',
-            'description',
-            'priority',
-            'is_reopened',
-            'status',
-            'project',
-            'assignee',
-            'comments'
+            "id",
+            "name",
+            "description",
+            "priority",
+            "is_reopened",
+            "status",
+            "project",
+            "assignee",
+            "comments",
         ]

@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from .models import Tasks, Comments, Attachments
+from task_manager.models import Tasks, Comments, Attachments
 import os
 
 
@@ -9,7 +9,7 @@ def create_task_created_comment(sender, instance, created, **kwargs):
     if created:
         Comments.objects.create(
             task=instance,
-            message='Task created!',
+            message="Task created!",
         )
 
 
