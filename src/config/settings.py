@@ -117,14 +117,14 @@ USE_I18N = True
 USE_TZ = True
 # Cache
 CACHES = {
-    # "default": {
-    #     "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
-    #     "LOCATION": "127.0.0.1:11211",
-    # }
     "default": {
-        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": BASE_DIR / "cache",
-    }
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "127.0.0.1:11211",
+    },
+    "db_cache": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
+    },
 }
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/

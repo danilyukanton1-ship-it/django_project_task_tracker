@@ -8,7 +8,6 @@ from task_manager.forms import (
     TasksCreationForm,
     ChangeTask,
     AttachmentForm,
-    DeleteTask,
 )
 from django.db import transaction
 from django.core.paginator import Paginator
@@ -16,6 +15,7 @@ from django.views.generic import TemplateView, CreateView, UpdateView, DeleteVie
 from django.views import View
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy, reverse
+from django.views.decorators.cache import cache_page
 
 tasks_list = [
     {"task_name": "Fix login bug", "status": "in progress", "priority": "high"},
@@ -101,6 +101,7 @@ class TasksWithComms(ListView):
         )
 
 
+@cache_page(60 * 30, cache="db_cache")
 class UserTaskView(ListView):
     model = Tasks
     template_name = "tasks/user_task.html"
