@@ -59,6 +59,8 @@ class About(TemplateView):
 
 
 class Index_2(View):
+
+    @cache_page(60 * 30, cache="db_cache")
     def get(self, request, *args, **kwargs):
         task = kwargs["task"]
         return HttpResponse(f"<h1>Index 2. {task}</h1>")
@@ -101,7 +103,6 @@ class TasksWithComms(ListView):
         )
 
 
-@cache_page(60 * 30, cache="db_cache")
 class UserTaskView(ListView):
     model = Tasks
     template_name = "tasks/user_task.html"
@@ -119,6 +120,7 @@ class UserTaskView(ListView):
 
         return Tasks.objects.none()
 
+    @cache_page(60 * 30, cache="db_cache")
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["users"] = User.objects.all()

@@ -125,6 +125,10 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "cache_table",
     },
+    "file_cache": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "c:/DJANGO FIRST PROJECT/cache",
+    },
 }
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
