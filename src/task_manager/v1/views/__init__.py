@@ -1,1 +1,7 @@
-from .task import task_detail, tasks_list
+__all__ = (
+    "TaskListAPIView",
+    "TaskDetailAPIView",
+)
+
+from task_manager.v1.views.task import TaskListAPIView
+from task_manager.v1.views.task import TaskDetailAPIView

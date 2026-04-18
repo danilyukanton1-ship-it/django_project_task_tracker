@@ -34,7 +34,7 @@ users = [
 
 
 class TaskView(ListView):
-    template_name = "tasks.html"
+    template_name = "tasks/tasks.html"
     model = Tasks
 
     paginate_by = 50
@@ -51,11 +51,11 @@ class TaskView(ListView):
 
 
 class Home(TemplateView):
-    template_name = "home.html"
+    template_name = "tasks/home.html"
 
 
 class About(TemplateView):
-    template_name = "about.html"
+    template_name = "tasks/about.html"
 
 
 class Index_2(View):
@@ -65,7 +65,7 @@ class Index_2(View):
 
 
 class TaskListView(TemplateView):
-    template_name = "tasks_list.html"
+    template_name = "tasks/tasks_list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,7 +74,7 @@ class TaskListView(TemplateView):
 
 
 class UserListView(TemplateView):
-    template_name = "users.html"
+    template_name = "tasks/users.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -83,7 +83,7 @@ class UserListView(TemplateView):
 
 
 class TasksWithComms(ListView):
-    template_name = "comment_tasks.html"
+    template_name = "tasks/comment_tasks.html"
     model = Tasks
 
     paginate_by = 50
@@ -103,7 +103,7 @@ class TasksWithComms(ListView):
 
 class UserTaskView(ListView):
     model = Tasks
-    template_name = "user_task.html"
+    template_name = "tasks/user_task.html"
     context_object_name = "tasks"
 
     def get_queryset(self):
@@ -140,7 +140,7 @@ def add_comment_form(request):
     else:
         form = CommentForm()
 
-    return render(request, "add_comment.html", {"form": form})
+    return render(request, "tasks/add_comment.html", {"form": form})
 
 
 def add_task_form(request):
@@ -154,13 +154,13 @@ def add_task_form(request):
     else:
         form = TasksCreationForm()
 
-    return render(request, "add_task.html", {"form": form})
+    return render(request, "tasks/add_task.html", {"form": form})
 
 
 class AddTaskView(CreateView):
     model = Tasks
     form_class = TasksCreationForm
-    template_name = "add_task.html"
+    template_name = "tasks/add_task.html"
     success_url = reverse_lazy("add_comments")
 
     def form_valid(self, form):
@@ -173,7 +173,7 @@ class AddTaskView(CreateView):
 class AddCommentView(CreateView):
     model = Comments
     form_class = CommentForm
-    template_name = "add_comment.html"
+    template_name = "tasks/add_comment.html"
     success_url = reverse_lazy("tasks")
 
     def form_valid(self, form):
@@ -192,7 +192,7 @@ class AddCommentView(CreateView):
 class DeleteTaskView(DeleteView):
     model = Tasks
     success_url = reverse_lazy("tasks")
-    template_name = "tasks_confirm_delete.html"
+    template_name = "tasks/tasks_confirm_delete.html"
     # template_name = "tasks_confirm_delete.html"
     # form_class = DeleteTask
     # pk_url_kwarg = "pk"
@@ -200,7 +200,7 @@ class DeleteTaskView(DeleteView):
 
 class AddTaskCommentView(CreateView):
     model = Tasks
-    template_name = "add_task_comm.html"
+    template_name = "tasks/add_task_comm.html"
     success_url = reverse_lazy("tasks")
     form_class = TasksCreationForm
 
@@ -293,7 +293,7 @@ class AddTaskCommentView(CreateView):
 class EditTaskView(UpdateView):
     model = Tasks
     form_class = ChangeTask
-    template_name = "change_task.html"
+    template_name = "tasks/change_task.html"
     success_url = reverse_lazy("tasks")
     pk_url_kwarg = "task_id"
     context_object_name = "task"
@@ -302,13 +302,13 @@ class EditTaskView(UpdateView):
 class CreateAttachmentView(CreateView):
     model = Attachments
     form_class = AttachmentForm
-    template_name = "attachment_form.html"
+    template_name = "tasks/attachment_form.html"
 
 
 class AttachmentsView(ListView):
     model = Attachments
     context_object_name = "attachments"
-    template_name = "attachments.html"
+    template_name = "tasks/attachments.html"
 
     paginate_by = 50
     paginator_class = Paginator
