@@ -129,6 +129,7 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
         "LOCATION": "c:/DJANGO FIRST PROJECT/cache",
     },
+    "BACKEND": "django.core.cache.backends.redis.RedisCache",
 }
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
