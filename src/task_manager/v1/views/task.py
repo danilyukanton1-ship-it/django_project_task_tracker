@@ -1,3 +1,5 @@
+from gc import get_objects
+
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
@@ -11,6 +13,10 @@ from django.http import Http404
 from rest_framework import mixins
 from rest_framework import generics
 from drf_spectacular.utils import extend_schema
+from django.core.cache import caches
+from django.shortcuts import get_object_or_404
+
+redis_cache = caches["redis"]
 
 # @csrf_exempt
 # def tasks_list(request):
@@ -175,13 +181,27 @@ class TaskDetailAPIView(
     queryset = Tasks.objects.all()
     serializer_class = TaskSerializer
 
+    def get_cache_key(self):
+        return f'task:{self.kwargs["pk"]}'
+
     @extend_schema(responses={200: TaskSerializer})
     def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+        cache_key = self.get_cache_key()
+        task = redis_cache.get(cache_key)
+
+        if task is not None:
+            return Response(task)
+        else:
+            task_obj = get_object_or_404(Tasks, pk=kwargs["pk"])
+            serialized_task = TaskSerializer(task_obj).data
+            redis_cache.set(cache_key, serialized_task, 600)
+            return Response(serialized_task)
 
     @extend_schema(request=TaskSerializer, responses={200: TaskSerializer})
     def put(self, request, *args, **kwargs):
+        redis_cache.delete(self.get_cache_key())
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
+        redis_cache.delete(self.get_cache_key())
         return self.destroy(request, *args, **kwargs)

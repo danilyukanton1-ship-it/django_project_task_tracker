@@ -2,6 +2,7 @@ from rest_framework import serializers
 from task_manager.models import Tasks, Projects
 from account.models import User
 from task_manager.v1.serializers.comment import CommentSerializer
+from django.core.cache import caches
 
 # class TaskSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)
@@ -25,6 +26,7 @@ from task_manager.v1.serializers.comment import CommentSerializer
 #         instance.save()
 #         return instance
 #
+redis_cache = caches["redis"]
 
 
 class TaskSerializer(serializers.ModelSerializer):
