@@ -3,13 +3,17 @@ __all__ = (
     "TaskDetailAPIView",
     "tag_view",
     "tag_detail_view",
-    "ProjectDetailsView",
-    "ProjectDetailsDetailView",
+    "ProjectDetailsAPIView",
+    "ProjectDetailsDetailAPIView",
+    "ProjectAPIView",
+    "ProjectDetailAPIView",
 )
 
 from task_manager.v1.views.task import TaskListAPIView
 from task_manager.v1.views.task import TaskDetailAPIView
 from task_manager.v1.views.tag import tag_detail_view
 from task_manager.v1.views.tag import tag_view
-from task_manager.v1.views.project_detail import ProjectDetailsView
-from task_manager.v1.views.project_detail import ProjectDetailsDetailView
+from task_manager.v1.views.project_detail import ProjectDetailsAPIView
+from task_manager.v1.views.project_detail import ProjectDetailsDetailAPIView
+from task_manager.v1.views.project import ProjectAPIView
+from task_manager.v1.views.project import ProjectDetailAPIView

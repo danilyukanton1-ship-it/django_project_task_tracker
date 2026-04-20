@@ -4,8 +4,10 @@ from task_manager.v1.views import (
     TaskDetailAPIView,
     tag_view,
     tag_detail_view,
-    ProjectDetailsView,
-    ProjectDetailsDetailView,
+    ProjectDetailsAPIView,
+    ProjectDetailsDetailAPIView,
+    ProjectAPIView,
+    ProjectDetailAPIView,
 )
 
 urlpatterns = [
@@ -13,6 +15,8 @@ urlpatterns = [
     path("<int:pk>/", TaskDetailAPIView.as_view()),
     path("tags/", tag_view),
     path("tags/<int:pk>/", tag_detail_view),
-    path("project-details/", ProjectDetailsView.as_view()),
-    path("project-details/<int:pk>/", ProjectDetailsDetailView.as_view()),
+    path("project-details/", ProjectDetailsAPIView.as_view()),
+    path("project-details/<int:pk>/", ProjectDetailsDetailAPIView.as_view()),
+    path("projects/", ProjectAPIView.as_view()),
+    path("projects/<int:pk>/", ProjectDetailAPIView.as_view()),
 ]
