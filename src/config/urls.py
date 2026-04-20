@@ -20,6 +20,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, include
 from debug_toolbar.toolbar import debug_toolbar_urls
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,8 +33,19 @@ urlpatterns = [
         include("task_manager.urls"),
     ),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
-    path("users/api/", include("account.v1.urls")),
-    path("tasks/api/", include("task_manager.v1.urls")),
+    path("api/users/", include("account.v1.urls")),
+    path("api/tasks/", include("task_manager.v1.urls")),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/schema/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ]
 
 if settings.DEBUG:
