@@ -4,8 +4,10 @@ from task_manager.v1.serializers import TagSerializer
 from rest_framework.decorators import api_view
 from task_manager.models import Tags
 from rest_framework.parsers import JSONParser
+from drf_spectacular.utils import extend_schema
 
 
+@extend_schema(tags=["Tag"])
 @api_view(["GET", "POST"])
 def tag_view(request):
     if request.method == "GET":
@@ -21,6 +23,7 @@ def tag_view(request):
         return JsonResponse(serializer.errors, status=400)
 
 
+@extend_schema(tags=["Tag"])
 @api_view(["GET", "PUT", "DELETE"])
 def tag_detail_view(request, pk):
     try:
