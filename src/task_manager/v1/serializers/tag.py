@@ -5,7 +5,9 @@ from task_manager.models import Tasks
 
 
 class TagSerializer(ModelSerializer):
-    tasks = serializers.PrimaryKeyRelatedField(many=True, queryset=Tasks.objects.all())
+    tasks = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Tasks.objects.all().prefetch_related("tasks")
+    )
 
     class Meta:
         model = Tags
