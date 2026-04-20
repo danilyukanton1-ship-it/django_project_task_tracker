@@ -34,6 +34,5 @@ urlpatterns = [
         "tasks/create_attach/", CreateAttachmentView.as_view(), name="create_attachment"
     ),
     path("tasks/attachments/", AttachmentsView.as_view(), name="attachments"),
-    path("tasks/api/", include("task_manager.v1.urls")),
     path("tasks/<int:pk>/delete/", DeleteTaskView.as_view(), name="delete_task"),
 ]

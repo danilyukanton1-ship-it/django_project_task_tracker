@@ -28,6 +28,8 @@ urlpatterns = [
         include("task_manager.urls"),
     ),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("users/api/", include("account.v1.urls")),
+    path("tasks/api/", include("task_manager.v1.urls")),
 ]
 
 if settings.DEBUG:
