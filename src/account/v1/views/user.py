@@ -4,8 +4,10 @@ from account.models import User
 from account.v1.serializers import UserSerializer
 from rest_framework import status
 from django.http import Http404
+from drf_spectacular.utils import extend_schema
 
 
+@extend_schema(tags=["User"])
 class UserAPIView(APIView):
 
     def get(self, request, format=None):
@@ -21,6 +23,7 @@ class UserAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(tags=["User"])
 class UserDetailAPIView(APIView):
 
     def get_object(self, pk):
