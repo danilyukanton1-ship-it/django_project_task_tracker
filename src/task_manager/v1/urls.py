@@ -8,6 +8,8 @@ from task_manager.v1.views import (
     ProjectDetailsDetailAPIView,
     ProjectAPIView,
     ProjectDetailAPIView,
+    CommentAPIView,
+    CommentDetailAPIView,
 )
 
 urlpatterns = [
@@ -19,4 +21,6 @@ urlpatterns = [
     path("project-details/<int:pk>/", ProjectDetailsDetailAPIView.as_view()),
     path("projects/", ProjectAPIView.as_view()),
     path("projects/<int:pk>/", ProjectDetailAPIView.as_view()),
+    path("comments/", CommentAPIView.as_view()),
+    path("comments/<int:pk>/", CommentDetailAPIView.as_view()),
 ]

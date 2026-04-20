@@ -7,6 +7,8 @@ __all__ = (
     "ProjectDetailsDetailAPIView",
     "ProjectAPIView",
     "ProjectDetailAPIView",
+    "CommentAPIView",
+    "CommentDetailAPIView",
 )
 
 from task_manager.v1.views.task import TaskListAPIView
@@ -17,3 +19,5 @@ from task_manager.v1.views.project_detail import ProjectDetailsAPIView
 from task_manager.v1.views.project_detail import ProjectDetailsDetailAPIView
 from task_manager.v1.views.project import ProjectAPIView
 from task_manager.v1.views.project import ProjectDetailAPIView
+from task_manager.v1.views.comment import CommentAPIView
+from task_manager.v1.views.comment import CommentDetailAPIView
