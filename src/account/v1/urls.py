@@ -1,7 +1,10 @@
 from django.urls import path
-from account.v1.views import UserAPIView, UserDetailAPIView
+from account.v1.views import UserAPIViewSet
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path("", UserAPIView.as_view()),
-    path("<int:pk>/", UserDetailAPIView.as_view()),
-]
+rest_router = DefaultRouter()
+rest_router.register("", UserAPIViewSet)
+
+urlpatterns = []
+
+urlpatterns += rest_router.urls

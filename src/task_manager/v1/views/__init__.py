@@ -1,6 +1,5 @@
 __all__ = (
-    "TaskListAPIView",
-    "TaskDetailAPIView",
+    "TaskAPIViewSet",
     "tag_view",
     "tag_detail_view",
     "ProjectDetailsAPIView",
@@ -13,8 +12,7 @@ __all__ = (
     "AttachmentDetailAPIView",
 )
 
-from task_manager.v1.views.task import TaskListAPIView
-from task_manager.v1.views.task import TaskDetailAPIView
+from task_manager.v1.views.task import TaskAPIViewSet
 from task_manager.v1.views.tag import tag_detail_view
 from task_manager.v1.views.tag import tag_view
 from task_manager.v1.views.project_detail import ProjectDetailsAPIView

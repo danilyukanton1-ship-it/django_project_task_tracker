@@ -1,7 +1,7 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 from task_manager.v1.views import (
-    TaskListAPIView,
-    TaskDetailAPIView,
+    TaskAPIViewSet,
     tag_view,
     tag_detail_view,
     ProjectDetailsAPIView,
@@ -14,9 +14,10 @@ from task_manager.v1.views import (
     AttachmentDetailAPIView,
 )
 
+router = DefaultRouter()
+router.register("", TaskAPIViewSet)
+
 urlpatterns = [
-    path("", TaskListAPIView.as_view()),
-    path("<int:pk>/", TaskDetailAPIView.as_view()),
     path("tags/", tag_view),
     path("tags/<int:pk>/", tag_detail_view),
     path("project-details/", ProjectDetailsAPIView.as_view()),
@@ -28,3 +29,5 @@ urlpatterns = [
     path("attachments/", AttachmentAPIView.as_view()),
     path("attachments/<int:pk>/", AttachmentDetailAPIView.as_view()),
 ]
+
+urlpatterns += router.urls

@@ -15,6 +15,8 @@ from rest_framework import generics
 from drf_spectacular.utils import extend_schema
 from django.core.cache import caches
 from django.shortcuts import get_object_or_404
+from rest_framework.viewsets import ModelViewSet
+from django.core.paginator import Paginator
 
 redis_cache = caches["redis"]
 
@@ -156,29 +158,12 @@ redis_cache = caches["redis"]
 
 
 @extend_schema(tags=["Task"])
-class TaskListAPIView(
-    mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView
-):
-    queryset = Tasks.objects.all()
-    serializer_class = TaskSerializer
-
-    @extend_schema(responses={201: TaskSerializer})
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    @extend_schema(request=TaskSerializer, responses={201: TaskSerializer})
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-
-@extend_schema(tags=["Task"])
-class TaskDetailAPIView(
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-    generics.GenericAPIView,
-):
-    queryset = Tasks.objects.all()
+class TaskAPIViewSet(ModelViewSet):
+    queryset = (
+        Tasks.objects.all()
+        .prefetch_related("tags")
+        .select_related("assignee", "project")
+    )
     serializer_class = TaskSerializer
 
     def get_cache_key(self):
