@@ -178,6 +178,11 @@ class AttachmentsAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" width=50/>', instance.photo.url)
 
 
-admin.site.register(Tags)
+@admin.register(Tags)
+class TagsAdmin(admin.ModelAdmin):
+    list_display = ["id", "name"]
+    search_fields = ["name"]
+
+
 admin.site.register(ProjectDetails)
 admin.site.register(Comments)

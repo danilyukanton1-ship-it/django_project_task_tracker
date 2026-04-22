@@ -4,6 +4,7 @@ from task_manager.v1.views import (
     TaskAPIViewSet,
     tag_view,
     tag_detail_view,
+    tag_tasks_view,
     ProjectDetailsAPIView,
     ProjectDetailsDetailAPIView,
     ProjectAPIView,
@@ -20,6 +21,7 @@ router.register("", TaskAPIViewSet)
 urlpatterns = [
     path("tags/", tag_view),
     path("tags/<int:pk>/", tag_detail_view),
+    path("tags/<int:pk>/tasks/", tag_tasks_view),
     path("project-details/", ProjectDetailsAPIView.as_view()),
     path("project-details/<int:pk>/", ProjectDetailsDetailAPIView.as_view()),
     path("projects/", ProjectAPIView.as_view()),

@@ -2,6 +2,7 @@ __all__ = (
     "TaskAPIViewSet",
     "tag_view",
     "tag_detail_view",
+    "tag_tasks_view",
     "ProjectDetailsAPIView",
     "ProjectDetailsDetailAPIView",
     "ProjectAPIView",
@@ -15,6 +16,7 @@ __all__ = (
 from task_manager.v1.views.task import TaskAPIViewSet
 from task_manager.v1.views.tag import tag_detail_view
 from task_manager.v1.views.tag import tag_view
+from task_manager.v1.views.tag import tag_tasks_view
 from task_manager.v1.views.project_detail import ProjectDetailsAPIView
 from task_manager.v1.views.project_detail import ProjectDetailsDetailAPIView
 from task_manager.v1.views.project import ProjectAPIView
