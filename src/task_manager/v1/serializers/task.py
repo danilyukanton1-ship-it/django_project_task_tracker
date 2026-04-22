@@ -3,6 +3,7 @@ from task_manager.models import Tasks, Projects
 from account.models import User
 from task_manager.v1.serializers.comment import CommentSerializer
 from django.core.cache import caches
+from django.contrib.auth import get_user_model
 
 # class TaskSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)
@@ -26,7 +27,14 @@ from django.core.cache import caches
 #         instance.save()
 #         return instance
 #
-redis_cache = caches["redis"]
+
+
+class UserTasksSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    username = serializers.CharField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    email = serializers.EmailField()
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -34,7 +42,7 @@ class TaskSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True)
     is_reopened = serializers.BooleanField(read_only=True)
     project = serializers.PrimaryKeyRelatedField(queryset=Projects.objects.all())
-    assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    assignee = UserTasksSerializer(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
