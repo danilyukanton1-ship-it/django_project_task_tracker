@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from task_manager.models import Tasks, Projects
-from account.models import User
 
 
-class UserTasksSerializer(serializers.Serializer):
+class UserSerializer(serializers.Serializer):
 
     id = serializers.IntegerField()
     username = serializers.CharField()
@@ -23,15 +22,21 @@ class UserTasksSerializer(serializers.Serializer):
 class CommentSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     message = serializers.CharField()
-    user = UserTasksSerializer(read_only=True, all_fields=False)
+    user = UserSerializer(read_only=True, all_fields=False)
+
+
+class ProjectSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    owner = UserSerializer(read_only=True, all_fields=False)
 
 
 class TaskSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    status = serializers.CharField(read_only=True)
-    is_reopened = serializers.BooleanField(read_only=True)
-    project = serializers.PrimaryKeyRelatedField(queryset=Projects.objects.all())
-    assignee = UserTasksSerializer(read_only=True)
+    status = serializers.CharField()
+    is_reopened = serializers.BooleanField()
+    project = ProjectSerializer(read_only=True)
+    assignee = UserSerializer(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
