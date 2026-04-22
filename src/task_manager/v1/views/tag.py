@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-
+from django.db.models import Count
 from task_manager.v1.serializers import TagSerializer
 from rest_framework.decorators import api_view
 from task_manager.models import Tags
@@ -14,9 +14,12 @@ from rest_framework.response import Response
 @api_view(["GET", "POST"])
 def tag_view(request):
     if request.method == "GET":
-        tags = Tags.objects.all().prefetch_related("tasks")
-        serializer = TagSerializer(tags, many=True)
-        return Response(serializer.data)
+        tags = Tags.objects.annotate(tasks_count=Count("tasks"))
+        pagination = PageNumberPagination()
+        pagination.page_size = 20
+        page = pagination.paginate_queryset(tags, request)
+        serializer = TagSerializer(page, many=True)
+        return pagination.get_paginated_response(serializer.data)
     elif request.method == "POST":
         data = JSONParser().parse(request)
         serializer = TagSerializer(data=data)
