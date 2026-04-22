@@ -16,7 +16,7 @@ def tag_view(request):
     if request.method == "GET":
         tags = Tags.objects.all().prefetch_related("tasks")
         serializer = TagSerializer(tags, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
     elif request.method == "POST":
         data = JSONParser().parse(request)
         serializer = TagSerializer(data=data)
