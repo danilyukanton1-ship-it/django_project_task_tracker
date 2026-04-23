@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from config.env import env, BASE_DIR, APPS_DIR
+from datetime import timedelta
 
 DEBUG = env("DEBUG")
 
@@ -159,6 +160,19 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 50,
+}
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))
+    ),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        minutes=int(env("REFRESH_TOKEN_LIFETIME_MINUTES"))
+    ),
+    "ALGORITHM": env("JWT_ALGORITHM"),
+    "SIGNING_KEY": env("SECRET_KEY"),
+    "AUTH_HEADER_TYPES": ("JWT",),
 }
 
 SPECTACULAR_SETTINGS = {
