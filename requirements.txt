@@ -12,4 +12,4 @@ django-filter==25.2
 djangorestframework==3.17.1
 drf-spectacular==0.29.0
 Markdown==3.10.2
-
+djangorestframework_simplejwt==5.5.1
