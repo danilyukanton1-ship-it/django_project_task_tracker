@@ -13,6 +13,11 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+# Django auth urls
+auth_urlpatterns = [
+    path("", include("account.urls")),
+]
+
 # JWT urls
 jwt_urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
@@ -27,7 +32,7 @@ api_urlpatterns = [
 ]
 
 
-# DRF SPECTACULAR SWAGGER urls
+# DRF-SPECTACULAR Swagger urls
 drf_spectacular_urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
@@ -49,7 +54,6 @@ urlpatterns = (
             "",
             include("task_manager.urls"),
         ),
-        path("", include("django.contrib.auth.urls")),
     ]
     + jwt_urlpatterns
     + api_urlpatterns
