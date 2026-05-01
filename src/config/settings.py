@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "drf_spectacular",
+    "rest_framework_simplejwt.token_blacklist",
     # application
     "task_manager.apps.TaskManagerConfig",
     # user
@@ -171,17 +172,19 @@ REST_FRAMEWORK = {
 }
 
 
-# SIMPLE_JWT = {
-#     "ACCESS_TOKEN_LIFETIME": timedelta(
-#         minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))
-#     ),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(
-#         minutes=int(env("REFRESH_TOKEN_LIFETIME_MINUTES"))
-#     ),
-#     "ALGORITHM": env("JWT_ALGORITHM"),
-#     "SIGNING_KEY": env("SECRET_KEY"),
-#     "AUTH_HEADER_TYPES": ("JWT",),
-# }
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))
+    ),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        minutes=int(env("REFRESH_TOKEN_LIFETIME_MINUTES"))
+    ),
+    "ALGORITHM": env("JWT_ALGORITHM"),
+    "SIGNING_KEY": env("SECRET_KEY"),
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ROTATE_REFRESH_TOKEN": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Task tracker",
