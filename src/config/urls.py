@@ -32,6 +32,7 @@ urlpatterns = [
         "",
         include("task_manager.urls"),
     ),
+    path("", include("django.contrib.auth.urls")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api/users/", include("account.v1.urls")),
     path("api/tasks/", include("task_manager.v1.urls")),
