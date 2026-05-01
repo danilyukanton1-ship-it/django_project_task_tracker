@@ -1,3 +1,5 @@
+# task 2
+
 In [1]: from django.contrib.auth.models import Group, Permission, User
 
 In [2]: Group.objects.create(name="Viewers")
@@ -38,3 +40,26 @@ In [43]: create_tag = Permission.objects.get(codename='add_tags')
 In [50]: client = Group.objects.get(name="Clients")
 
 In [53]: client.permissions.add(view_task, create_task, create_project, create_comment, view_project, view_comment, create_tag, view_tags)
+
+# task 3
+
+In [3]: from account.models import User
+
+In [4]: user = User.objects.create_user(username='Anton123', email='anton123@gmai
+      ⋮ l.ru', password='user_anton')
+
+In [5]: user.is_staff = True
+
+In [6]: user.is_active = True
+
+In [7]: user.save()
+
+In [8]: add_task = Permission.objects.get(codename='add_tasks')
+
+In [9]: view_task = Permission.objects.get(codename='view_tasks')
+
+In [10]: add_comment = Permission.objects.get(codename='add_comments')
+
+In [11]: view_comment = Permission.objects.get(codename='view_comments')
+
+In [12]: user.user_permissions.add(add_task, view_task, add_comment, view_comment)
