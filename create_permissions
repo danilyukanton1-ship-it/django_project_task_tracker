@@ -1,0 +1,40 @@
+In [1]: from django.contrib.auth.models import Group, Permission, User
+
+In [2]: Group.objects.create(name="Viewers")
+Out[2]: <Group: Viewers>
+
+In [3]: Group.objects.create(name="Moderators")
+Out[3]: <Group: Moderators>
+
+In [4]: Group.objects.create(name="Clients")
+Out[4]: <Group: Clients>
+
+In [12]: view_task = Permission.objects.get(codename='view_tasks')
+
+In [14]: view_attachment = Permission.objects.get(codename='view_attachments')
+
+In [16]: view_tags = Permission.objects.get(codename='view_tags')
+
+In [18]: view_project = Permission.objects.get(codename='view_projects')
+
+In [20]: view_comment = Permission.objects.get(codename='view_comments')
+
+In [22]: viewer.permissions.add(view_task, view_attachment, view_project, view_comment, view_tags)
+
+In [28]: change_comment = Permission.objects.get(codename='change_comments')
+
+In [31]: delete_comments = Permission.objects.get(codename='delete_comments')
+
+In [33]: moderators.permissions.add(view_task, view_comment, change_comment, delete_comments)
+
+In [38]: create_task = Permission.objects.get(codename='add_tasks')
+
+In [39]: create_project = Permission.objects.get(codename='add_projects')
+
+In [41]: create_comment = Permission.objects.get(codename='add_comments')
+
+In [43]: create_tag = Permission.objects.get(codename='add_tags')
+
+In [50]: client = Group.objects.get(name="Clients")
+
+In [53]: client.permissions.add(view_task, create_task, create_project, create_comment, view_project, view_comment, create_tag, view_tags)

@@ -1,5 +1,7 @@
 from django.contrib import admin
 from account.models import User
 
-admin.site.register(User)
-# Register your models here.
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    filter_horizontal = ("user_permissions",)
