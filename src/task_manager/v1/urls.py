@@ -16,7 +16,7 @@ from task_manager.v1.views import (
 )
 
 router = DefaultRouter()
-router.register("", TaskAPIViewSet)
+router.register("", TaskAPIViewSet, basename="task")
 
 urlpatterns = [
     path("tags/", tag_view),

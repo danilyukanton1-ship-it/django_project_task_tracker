@@ -11,8 +11,6 @@ class UserSerializer(serializers.Serializer):
 class TaskSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
-    priority = serializers.IntegerField()
-    status = serializers.CharField()
 
 
 class CommentSerializer(serializers.ModelSerializer):

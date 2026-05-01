@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from config.pagination import CustomPagination
 from task_manager.v1.serializers import CommentSerializer
 from task_manager.models import Comments
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from django.http import Http404
 from rest_framework import status
 
@@ -10,10 +12,20 @@ from rest_framework import status
 @extend_schema(tags=["Comment"])
 class CommentAPIView(APIView):
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="page", description="Page number", required=False, type=int
+            ),
+        ]
+    )
     def get(self, request):
-        comments = Comments.objects.all().select_related("user", "task")
-        serializer = CommentSerializer(comments, many=True)
-        return Response(serializer.data)
+        comments = Comments.objects.select_related("user", "task").all()
+
+        paginator = CustomPagination()
+        page = paginator.paginate_queryset(comments, request)
+        serializer = CommentSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = CommentSerializer(data=request.data)

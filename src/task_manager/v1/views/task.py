@@ -1,22 +1,29 @@
-from task_manager.models import Tasks
-from task_manager.v1.serializers import TaskSerializer
+from task_manager.models import Tasks, Comments
+from task_manager.v1.serializers import TaskSerializer, TaskQueryFilterSerializer
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 from django.core.cache import caches
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
+from config.pagination import CustomPagination
+from django.db.models import Prefetch
 
 redis_cache = caches["redis"]
 
 
 @extend_schema(tags=["Task"])
 class TaskAPIViewSet(ModelViewSet):
-    queryset = (
-        Tasks.objects.all()
-        .prefetch_related("tags")
-        .select_related("assignee", "project")
+    queryset = Tasks.objects.select_related(
+        "assignee", "project", "project__owner"
+    ).prefetch_related(
+        "tags", Prefetch("comments", queryset=Comments.objects.select_related("user"))
     )
     serializer_class = TaskSerializer
+    pagination_class = CustomPagination
+    filterset_class = TaskQueryFilterSerializer
+
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def get_cache_key(self):
         return f'task:{self.kwargs["pk"]}'

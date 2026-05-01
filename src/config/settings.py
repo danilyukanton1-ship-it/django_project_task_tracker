@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "rest_framework",
+    "django_filters",
     "drf_spectacular",
     # application
     "task_manager.apps.TaskManagerConfig",
@@ -159,26 +160,29 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 50,
+    "PAGE_SIZE": 25,
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(
-        minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))
-    ),
-    "REFRESH_TOKEN_LIFETIME": timedelta(
-        minutes=int(env("REFRESH_TOKEN_LIFETIME_MINUTES"))
-    ),
-    "ALGORITHM": env("JWT_ALGORITHM"),
-    "SIGNING_KEY": env("SECRET_KEY"),
-    "AUTH_HEADER_TYPES": ("JWT",),
-}
+# SIMPLE_JWT = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(
+#         minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))
+#     ),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(
+#         minutes=int(env("REFRESH_TOKEN_LIFETIME_MINUTES"))
+#     ),
+#     "ALGORITHM": env("JWT_ALGORITHM"),
+#     "SIGNING_KEY": env("SECRET_KEY"),
+#     "AUTH_HEADER_TYPES": ("JWT",),
+# }
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Task tracker",
     "DESCRIPTION": "Your project description",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
-    # OTHER SETTINGS
 }
