@@ -5,7 +5,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
 
-class CustomAuthentication(JWTAuthentication):
+class CustomTokenAuthentication(JWTAuthentication):
 
     def get_validated_token(self, token):
         validated_token = super().get_validated_token(token)
