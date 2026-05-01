@@ -130,7 +130,7 @@ CACHES = {
     },
     "file_cache": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": "c:/DJANGO FIRST PROJECT/cache",
+        "LOCATION": "c:/DJANGO FIRST PROJECT/.cache",
     },
     "redis": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -182,7 +182,7 @@ SIMPLE_JWT = {
     "ALGORITHM": env("JWT_ALGORITHM"),
     "SIGNING_KEY": env("SECRET_KEY"),
     "AUTH_HEADER_TYPES": ("JWT",),
-    "ROTATE_REFRESH_TOKEN": True,
+    "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
