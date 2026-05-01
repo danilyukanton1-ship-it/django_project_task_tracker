@@ -16,6 +16,7 @@ from django.views import View
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.cache import cache_page
+from django.contrib.auth.decorators import login_required, permission_required
 
 tasks_list = [
     {"task_name": "Fix login bug", "status": "in progress", "priority": "high"},
@@ -127,6 +128,8 @@ class UserTaskView(ListView):
         return context
 
 
+@login_required
+@permission_required("comments.add_comments")
 def add_comment_form(request):
     task_name = request.session.get("pending_task_name")
     task = Tasks.objects.get(name=task_name)
@@ -146,6 +149,8 @@ def add_comment_form(request):
     return render(request, "tasks/add_comment.html", {"form": form})
 
 
+@login_required
+@permission_required("tasks.add_tasks")
 def add_task_form(request):
     if request.method == "POST":
         form = TasksCreationForm(request.POST)
