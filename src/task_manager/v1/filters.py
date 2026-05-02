@@ -10,3 +10,16 @@ class TaskQueryFilterSerializer(django_filters.FilterSet):
     class Meta:
         model = Tasks
         fields = ["name", "status", "priority"]
+
+
+class TaskRequestUserFilterSerializer(django_filters.FilterSet):
+    my_tasks = django_filters.BooleanFilter(method="filter_user_tasks")
+
+    def filter_user_tasks(self, queryset, name, value):
+        if value:
+            return queryset.filter(user=self.request.user)
+        return queryset
+
+    class Meta:
+        model = Tasks
+        fields = ["my_tasks"]
