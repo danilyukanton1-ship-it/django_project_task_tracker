@@ -1,9 +1,6 @@
 from task_manager.models import Tasks, Comments
 from task_manager.v1.serializers import TaskSerializer
-from task_manager.v1.filters import (
-    TaskQueryFilterSerializer,
-    TaskRequestUserFilterSerializer,
-)
+from task_manager.v1.filters import TaskQueryFilterSerializer
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 from django.core.cache import caches
@@ -24,7 +21,7 @@ class TaskAPIViewSet(ModelViewSet):
     )
     serializer_class = TaskSerializer
     pagination_class = CustomPagination
-    filterset_class = (TaskQueryFilterSerializer, TaskRequestUserFilterSerializer)
+    filterset_class = (TaskQueryFilterSerializer,)
 
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
