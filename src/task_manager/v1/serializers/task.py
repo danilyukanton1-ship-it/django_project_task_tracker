@@ -1,16 +1,5 @@
 from rest_framework import serializers
 from task_manager.models import Tasks
-import django_filters
-
-
-class TaskQueryFilterSerializer(django_filters.FilterSet):
-    name = django_filters.CharFilter(lookup_expr="icontains")
-    priority_gt = django_filters.NumberFilter(field_name="priority", lookup_expr="gt")
-    priority_lt = django_filters.NumberFilter(field_name="priority", lookup_expr="lt")
-
-    class Meta:
-        model = Tasks
-        fields = ["name", "status", "priority"]
 
 
 class UserSerializer(serializers.Serializer):

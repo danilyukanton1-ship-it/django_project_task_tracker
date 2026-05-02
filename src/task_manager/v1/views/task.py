@@ -1,5 +1,6 @@
 from task_manager.models import Tasks, Comments
-from task_manager.v1.serializers import TaskSerializer, TaskQueryFilterSerializer
+from task_manager.v1.serializers import TaskSerializer
+from task_manager.v1.filters import TaskQueryFilterSerializer
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 from django.core.cache import caches
