@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from config.pagination import CustomPagination
 from django.db.models import Prefetch
+from django_filters.rest_framework import DjangoFilterBackend
 
 redis_cache = caches["redis"]
 
@@ -21,7 +22,19 @@ class TaskAPIViewSet(ModelViewSet):
     )
     serializer_class = TaskSerializer
     pagination_class = CustomPagination
+    filter_backends = (DjangoFilterBackend,)
     filterset_class = (TaskQueryFilterSerializer,)
+
+    def get_queryset(self):
+        user = self.request.user
+        return (
+            Tasks.objects.select_related("assignee", "project", "project__owner")
+            .prefetch_related(
+                "tags",
+                Prefetch("comments", queryset=Comments.objects.select_related("user")),
+            )
+            .filter(assignee=user)
+        )
 
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
