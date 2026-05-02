@@ -24,6 +24,9 @@ class TaskAPIViewSet(ModelViewSet):
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = (TaskQueryFilterSerializer,)
+    filterset_fields = {
+        "created_at": ["lte", "gte"],
+    }
 
     def get_queryset(self):
         user = self.request.user
