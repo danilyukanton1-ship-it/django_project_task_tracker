@@ -1,4 +1,4 @@
-from django_filters.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter
 
 from task_manager.models import Tasks, Comments
 from task_manager.v1.serializers import TaskSerializer
@@ -24,14 +24,11 @@ class TaskAPIViewSet(ModelViewSet):
     )
     serializer_class = TaskSerializer
     pagination_class = CustomPagination
-    filter_backends = (
+    filter_backends = [
         DjangoFilterBackend,
         OrderingFilter,
-    )
-    filterset_class = (TaskQueryFilterSerializer,)
-    filterset_fields = {
-        "created_at": ["lte", "gte"],
-    }
+    ]
+    filterset_class = TaskQueryFilterSerializer
     ordering_fields = ("created_at", "priority")
 
     def get_queryset(self):
