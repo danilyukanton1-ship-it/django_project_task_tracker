@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_spectacular",
     "rest_framework_simplejwt.token_blacklist",
+    "django_celery_results",
     # application
     "task_manager.apps.TaskManagerConfig",
     # user
@@ -195,3 +196,8 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
+
+# CELERY
+CELERY_TIMEZONE = "Belarus/Minsk"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 1800
