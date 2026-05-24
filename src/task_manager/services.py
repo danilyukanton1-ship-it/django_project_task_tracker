@@ -2,20 +2,19 @@ from task_manager.models import UniqueQueue
 
 
 class UniqueQueueService:
-    def __init__(self, queue=None) -> None:
-        if queue is not None:
-            self.queue = queue
-        else:
-            self.queue = []
 
-    def add_to_queue(self, item):
-        if item not in self.queue:
-            self.queue.append(item)
+    @staticmethod
+    def add_to_queue(item):
+        if not UniqueQueue.objects.filter(item=item).exists():
+            UniqueQueue.objects.create(item=item)
 
-    def get_length(self):
-        return len(self.queue)
+    @staticmethod
+    def get_length():
+        return UniqueQueue.objects.count()
 
-    def get_last_item(self):
-        if len(self.queue) > 0:
-            return self.queue[-1]
+    @staticmethod
+    def get_last_item():
+        last_item = UniqueQueue.objects.order_by("-created_at").first()
+        if last_item:
+            return last_item.item
         return None

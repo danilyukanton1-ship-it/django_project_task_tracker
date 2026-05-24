@@ -5,6 +5,7 @@ __all__ = (
     "Tags",
     "Projects",
     "ProjectDetails",
+    "UniqueQueue",
 )
 
 from task_manager.models.tasks import Tasks
@@ -13,3 +14,4 @@ from task_manager.models.comments import Comments
 from task_manager.models.tags import Tags
 from task_manager.models.projects import Projects
 from task_manager.models.project_details import ProjectDetails
+from task_manager.models.unique_queue import UniqueQueue
