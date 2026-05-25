@@ -1,14 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
-from task_manager.models import Tasks, Attachments, Comments
-from account.models import User
-from task_manager.forms import (
-    CommentForm,
-    TasksCreationForm,
-    ChangeTask,
-    AttachmentForm,
-)
 from django.db import transaction
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
@@ -17,6 +9,14 @@ from django.views.generic.list import ListView
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.cache import cache_page
 from django.contrib.auth.decorators import login_required, permission_required
+from task_manager.models import Tasks, Attachments, Comments
+from account.models import User
+from task_manager.forms import (
+    CommentForm,
+    TasksCreationForm,
+    ChangeTask,
+    AttachmentForm,
+)
 
 tasks_list = [
     {"task_name": "Fix login bug", "status": "in progress", "priority": "high"},
@@ -121,7 +121,6 @@ class UserTaskView(ListView):
 
         return Tasks.objects.none()
 
-    @cache_page(60 * 30, cache="db_cache")
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["users"] = User.objects.all()
@@ -172,8 +171,8 @@ class AddTaskView(CreateView):
     success_url = reverse_lazy("add_comments")
 
     def form_valid(self, form):
-        task = form.save()
-        self.request.session["pending_task_name"] = task.name
+        self.object = form.save()
+        self.request.session["pending_task_name"] = self.object.name
         messages.success(self.request, "Задача добавлена")
         return super().form_valid(form)
 
@@ -249,53 +248,6 @@ class AddTaskCommentView(CreateView):
         messages.error(self.request, "ERORR!!!")
         context = self.get_context_data(form=task_form, form2=com_form)
         return self.render_to_response(context)
-
-
-# class AddTaskCommentView(CreateView):
-#     model = Tasks
-#     form_class = TasksCreationForm
-#     template_name = 'add_task_com.html'
-#     success_url = reverse_lazy('tasks')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         if 'form2' not in kwargs:
-#             context['form2'] = CommentForm()
-#         else:
-#             context['form2'] = kwargs['form2']
-#         return context
-#
-#     def post(self, request, *args, **kwargs):
-#         self.object = None
-#         task_form = self.get_form()
-#         comment_form = CommentForm(request.POST)
-#
-#         if task_form.is_valid() and comment_form.is_valid():
-#             return self.form_valid(task_form, comment_form)
-#         else:
-#             return self.form_invalid(task_form, comment_form)
-#
-#     @transaction.atomic
-#     def form_valid(self, task_form, comment_form):
-#         task = task_form.save()
-#
-#         self.request.session['pending_task_name'] = task.name
-#
-#         comment = comment_form.save(commit=False)
-#         comment.user = User.objects.get(username=comment_form.cleaned_data['user'])
-#
-#         comment.task = task
-#         comment.save()
-#
-#         messages.success(self.request, 'Задача добавлена')
-#         messages.success(self.request, 'Комментарий добавлен')
-#
-#         return super().form_valid(task_form)
-#
-#     def form_invalid(self, task_form, comment_form):
-#         messages.error(self.request, 'ERROR!!!!')
-#         context = self.get_context_data(form1=task_form, form2=comment_form)
-#         return self.render_to_response(context)
 
 
 class EditTaskView(UpdateView):
