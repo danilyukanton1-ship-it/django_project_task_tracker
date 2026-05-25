@@ -10,7 +10,10 @@ class UniqueQueueService:
 
     @staticmethod
     def get_length():
-        return UniqueQueue.objects.count()
+        length = UniqueQueue.objects.count()
+        if length:
+            return length
+        return None
 
     @staticmethod
     def get_last_item():

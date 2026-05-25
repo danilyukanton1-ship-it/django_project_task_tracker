@@ -3,22 +3,53 @@ from src.task_manager.models import UniqueQueue
 import pytest
 
 
-@pytest.mark.parametrize(["item", "res"], [("1", "1"), (1, "1")])
 @pytest.mark.django_db
-def test_unique_queue(item, res):
-    q = UniqueQueueService()
-    q.add_to_queue(item)
-    assert UniqueQueue.objects.first().item == res
+class TestUniqueQueueService:
 
+    @pytest.fixture
+    def queue_factory(self):
 
-@pytest.mark.parametrize(
-    ["item1", "item2", "item3", "res"], [("1", "2", "3", "3"), (1, 2, 3, "3")]
-)
-@pytest.mark.django_db
-def test_add__multiple_to_queue(item1, item2, item3, res):
-    q = UniqueQueueService()
-    q.add_to_queue(item1)
-    q.add_to_queue(item2)
-    q.add_to_queue(item3)
-    assert UniqueQueue.objects.all().count() == 3
-    assert UniqueQueue.objects.order_by("-created_at").first().item == res
+        def _create_queue(items):
+
+            queue = UniqueQueueService()
+
+            for item in items:
+                queue.add_to_queue(item)
+
+            return queue
+
+        return _create_queue
+
+    @pytest.mark.parametrize(["item", "res"], [("1", "1"), (1, "1")])
+    def test_if_adds_items_to_queue(self, queue_factory, item, res):
+        queue = queue_factory([item])
+        assert queue.get_last_item() == res
+
+    @pytest.mark.parametrize(
+        ["items", "res"], [(["1", "2", "3"], "3"), ([1, 2, 3], "3")]
+    )
+    def test_add_multiple_to_queue(self, queue_factory, items, res):
+        queue = queue_factory(items)
+        assert UniqueQueue.objects.all().count() == 3
+        assert queue.get_last_item() == res
+
+    @pytest.mark.parametrize(["item", "res"], [("1", "1"), (1, "1")])
+    def test_not_to_duplicate(self, queue_factory, item, res):
+        queue = queue_factory([item, item])
+        assert queue.get_length() == 1
+        assert queue.get_last_item() == res
+
+    @pytest.mark.parametrize(["items"], [(["1", "2", "3"],)])
+    def test_get_length(self, queue_factory, items):
+        queue = queue_factory(items)
+        assert queue.get_length() == 3
+
+    @pytest.mark.parametrize(["items", "res"], [(["1", "2", "3"], "3")])
+    def test_lifo_strategy(self, queue_factory, items, res):
+        queue = queue_factory(items)
+        assert queue.get_last_item() == res
+
+    def test_empty_queue_returns_none(self, queue_factory):
+        queue = queue_factory([])
+        assert queue.get_length() is None
+        assert queue.get_last_item() is None
