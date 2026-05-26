@@ -1,5 +1,5 @@
-from src.task_manager.services import UniqueQueueService
-from src.task_manager.models import UniqueQueue
+from task_manager.services import UniqueQueueService
+from task_manager.models import UniqueQueue
 import pytest
 
 
