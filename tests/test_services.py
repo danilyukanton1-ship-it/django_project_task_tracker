@@ -51,5 +51,5 @@ class TestUniqueQueueService:
 
     def test_empty_queue_returns_none(self, queue_factory):
         queue = queue_factory([])
-        assert queue.get_length() is None
+        assert queue.get_length() == 0
         assert queue.get_last_item() is None
