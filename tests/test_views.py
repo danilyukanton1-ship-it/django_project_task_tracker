@@ -185,8 +185,8 @@ class TestUserTaskView:
         templates = [t.name for t in response.templates]
         assert "tasks/user_tasks.html" in templates
 
-    def test_returns_only_tasks_of_current_user(self, client, path, user):
-        response = client.get(path, {"user": user.email})
+    def test_returns_only_tasks_of_current_user(self, client, path, user1):
+        response = client.get(path, {"user": user1.email})
         tasks = response.context["tasks"]
         assert len(tasks) == 1
         assert tasks[0].name == "test1"
