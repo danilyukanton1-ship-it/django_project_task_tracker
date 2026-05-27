@@ -7,5 +7,14 @@ services:
       - redis-data:/data
     restart: unless-stopped
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    restart: unless-stopped
+
 volumes:
   redis-data:
+  rabbitmq-data:
