@@ -13,10 +13,12 @@ from task_manager.v1.views import (
     CommentDetailAPIView,
     AttachmentAPIView,
     AttachmentDetailAPIView,
+    PeriodicTaskViewSet,
 )
 
 router = DefaultRouter()
 router.register("", TaskAPIViewSet, basename="task")
+router.register('periodic-tasks', PeriodicTaskViewSet, basename="periodic-task")
 
 urlpatterns = [
     path("tags/", tag_view),

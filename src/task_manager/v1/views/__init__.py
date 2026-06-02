@@ -11,6 +11,7 @@ __all__ = (
     "CommentDetailAPIView",
     "AttachmentAPIView",
     "AttachmentDetailAPIView",
+    "PeriodicTaskViewSet",
 )
 
 from task_manager.v1.views.task import TaskAPIViewSet
@@ -25,3 +26,4 @@ from task_manager.v1.views.comment import CommentAPIView
 from task_manager.v1.views.comment import CommentDetailAPIView
 from task_manager.v1.views.attachment import AttachmentAPIView
 from task_manager.v1.views.attachment import AttachmentDetailAPIView
+from task_manager.v1.views.periodic_task import PeriodicTaskViewSet
