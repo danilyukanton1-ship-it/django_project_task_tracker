@@ -8,34 +8,54 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0001_initial'),
+        ("account", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Employees',
+            name="Employees",
             fields=[
-                ('user_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('work_time', models.PositiveSmallIntegerField()),
-                ('worktime_timezone', models.SmallIntegerField()),
+                (
+                    "user_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                ("work_time", models.PositiveSmallIntegerField()),
+                ("worktime_timezone", models.SmallIntegerField()),
             ],
             options={
-                'verbose_name': 'Employee',
-                'verbose_name_plural': 'Employees',
-                'db_table': 'employees',
+                "verbose_name": "Employee",
+                "verbose_name_plural": "Employees",
+                "db_table": "employees",
             },
-            bases=('account.user',),
+            bases=("account.user",),
         ),
         migrations.CreateModel(
-            name='Owners',
+            name="Owners",
             fields=[
-                ('user_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
+                (
+                    "user_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Owner',
-                'verbose_name_plural': 'Owners',
-                'db_table': 'owners',
+                "verbose_name": "Owner",
+                "verbose_name_plural": "Owners",
+                "db_table": "owners",
             },
-            bases=('account.user',),
+            bases=("account.user",),
         ),
     ]

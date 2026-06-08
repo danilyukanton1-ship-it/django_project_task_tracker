@@ -12,15 +12,15 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     last_name = models.CharField(max_length=64, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(max_length=64, unique=True)
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.email}"
+        return f"{self.username}"
 
     class Meta:
-        ordering = ["-id","-created_at"]
+        ordering = ["-id", "-created_at"]
         db_table = "users"
         verbose_name = "User"
         verbose_name_plural = "Users"

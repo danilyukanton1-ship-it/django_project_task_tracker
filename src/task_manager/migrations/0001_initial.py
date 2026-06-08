@@ -16,107 +16,331 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Projects',
+            name="Projects",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
-                ('name', models.CharField(max_length=64, unique=True, verbose_name='Наименование')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='Описание')),
-                ('owner', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='projects', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата создания"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Дата обновления"),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=64, unique=True, verbose_name="Наименование"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="Описание"),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="projects",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Проект',
-                'verbose_name_plural': 'Проект',
-                'db_table': 'projects',
-                'ordering': ['-created_at'],
+                "verbose_name": "Проект",
+                "verbose_name_plural": "Проект",
+                "db_table": "projects",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='ProjectDetails',
+            name="ProjectDetails",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
-                ('info', models.CharField(max_length=64, unique=True, verbose_name='Информация')),
-                ('serial_id', models.IntegerField(blank=True, null=True, verbose_name='ID проекта')),
-                ('project', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='project_detail', to='task_manager.projects')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата создания"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Дата обновления"),
+                ),
+                (
+                    "info",
+                    models.CharField(
+                        max_length=64, unique=True, verbose_name="Информация"
+                    ),
+                ),
+                (
+                    "serial_id",
+                    models.IntegerField(
+                        blank=True, null=True, verbose_name="ID проекта"
+                    ),
+                ),
+                (
+                    "project",
+                    models.OneToOneField(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="project_detail",
+                        to="task_manager.projects",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Детали проекта',
-                'verbose_name_plural': 'Детали проектов',
-                'db_table': 'project_details',
-                'ordering': ['-created_at'],
+                "verbose_name": "Детали проекта",
+                "verbose_name_plural": "Детали проектов",
+                "db_table": "project_details",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Tasks',
+            name="Tasks",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
-                ('name', models.CharField(max_length=64, unique=True, verbose_name='Наименование')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='Описание')),
-                ('status', models.CharField(choices=[('created', 'Created'), ('started', 'Started'), ('completed', 'Completed'), ('canceled', 'Canceled'), ('failed', 'Failed')], default='created', verbose_name='Статус')),
-                ('priority', models.IntegerField(default=3, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)], verbose_name='Приоритетность')),
-                ('is_reopened', models.BooleanField(default=False, verbose_name='Переоткрывалась ли')),
-                ('assignee', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='tasks', to=settings.AUTH_USER_MODEL)),
-                ('project', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='tasks', to='task_manager.projects')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата создания"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Дата обновления"),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=64, unique=True, verbose_name="Наименование"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="Описание"),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("created", "Created"),
+                            ("started", "Started"),
+                            ("completed", "Completed"),
+                            ("canceled", "Canceled"),
+                            ("failed", "Failed"),
+                        ],
+                        default="created",
+                        verbose_name="Статус",
+                    ),
+                ),
+                (
+                    "priority",
+                    models.IntegerField(
+                        default=3,
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                        verbose_name="Приоритетность",
+                    ),
+                ),
+                (
+                    "is_reopened",
+                    models.BooleanField(
+                        default=False, verbose_name="Переоткрывалась ли"
+                    ),
+                ),
+                (
+                    "assignee",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="tasks",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "project",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tasks",
+                        to="task_manager.projects",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Задача',
-                'verbose_name_plural': 'Задача',
-                'db_table': 'tasks',
-                'ordering': ['-priority', '-created_at'],
+                "verbose_name": "Задача",
+                "verbose_name_plural": "Задача",
+                "db_table": "tasks",
+                "ordering": ["-priority", "-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Tags',
+            name="Tags",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
-                ('name', models.CharField(max_length=64, unique=True, verbose_name='Наименование')),
-                ('tasks', models.ManyToManyField(related_name='tags', to='task_manager.tasks')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата создания"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Дата обновления"),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=64, unique=True, verbose_name="Наименование"
+                    ),
+                ),
+                (
+                    "tasks",
+                    models.ManyToManyField(
+                        related_name="tags", to="task_manager.tasks"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Тег',
-                'verbose_name_plural': 'Теги',
-                'db_table': 'tags',
-                'ordering': ['-created_at'],
+                "verbose_name": "Тег",
+                "verbose_name_plural": "Теги",
+                "db_table": "tags",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Comments',
+            name="Comments",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
-                ('message', models.CharField(max_length=64, unique=True, verbose_name='Текст комментария')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='task_manager.tasks')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата создания"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Дата обновления"),
+                ),
+                (
+                    "message",
+                    models.CharField(
+                        max_length=64, unique=True, verbose_name="Текст комментария"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "task",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="task_manager.tasks",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Комментарий',
-                'verbose_name_plural': 'Комментарии',
-                'db_table': 'comments',
-                'ordering': ['-created_at', 'message'],
+                "verbose_name": "Комментарий",
+                "verbose_name_plural": "Комментарии",
+                "db_table": "comments",
+                "ordering": ["-created_at", "message"],
             },
         ),
         migrations.CreateModel(
-            name='Attachments',
+            name="Attachments",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
-                ('name', models.CharField(max_length=64, unique=True, verbose_name='Наименование')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='attachments', to='task_manager.tasks')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата создания"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Дата обновления"),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=64, unique=True, verbose_name="Наименование"
+                    ),
+                ),
+                (
+                    "task",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="attachments",
+                        to="task_manager.tasks",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Вложение',
-                'verbose_name_plural': 'Вложения',
-                'db_table': 'attachments',
-                'ordering': ['name'],
+                "verbose_name": "Вложение",
+                "verbose_name_plural": "Вложения",
+                "db_table": "attachments",
+                "ordering": ["name"],
             },
         ),
     ]
